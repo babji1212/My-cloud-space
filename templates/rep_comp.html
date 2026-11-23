@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% from "_reptabs.html" import tabs with context %}
+{% block body %}{{ tabs('rep_comp') }}
+<h1>🏆 Competitive exams</h1>
+<div class="card wrap">{% if c.matrix %}<table><thead><tr><th>Exam</th>{% for s in c.statuses %}<th>{{ s }}</th>{% endfor %}</tr></thead><tbody>{% for ex, row in c.matrix.items() %}<tr><td><b>{{ ex }}</b></td>{% for s in c.statuses %}<td>{{ row.get(s, '') }}</td>{% endfor %}</tr>{% endfor %}</tbody></table>{% else %}<div class="empty">No competitive exam records in {{ ay or 'all years' }}.</div>{% endif %}</div>
+{% endblock %}

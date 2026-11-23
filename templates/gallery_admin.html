@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>📸 Gallery Events</h1>
+<p class="sub">Each event appears in the website gallery with its own logo. Visitors click it to see the details and photos. <a href="{{ url_for('home') }}#gallery" target="_blank" rel="noopener" style="color:var(--pri)">Open website ↗</a></p>
+<div class="card"><h3>➕ Add a new event</h3>
+<form method="post" enctype="multipart/form-data"><div class="fg">
+  <div><label>Event name</label><input name="title" required placeholder="Annual Day"></div>
+  <div><label>Slider category</label><select name="category">{% for c in cats %}<option>{{ c }}</option>{% endfor %}</select></div>
+  <div><label>Date</label><input name="date" placeholder="e.g. 15 Dec 2026"></div>
+  <div><label>Logo (an emoji)</label><input name="icon" value="🎉" maxlength="8"></div>
+  <div><label>Cover image (optional - replaces the emoji logo)</label><input type="file" name="cover" accept="image/*"></div>
+  <div class="full"><label>Event details</label><textarea name="details" rows="4" placeholder="What happened at this event?"></textarea></div>
+  <div class="full"><label>Event photos (select many at once)</label><input type="file" name="photos" accept="image/*" multiple></div>
+  <div class="full"><label>Event videos (MP4 or WebM works best; you can select several)</label><input type="file" name="videos" accept="video/*" multiple></div>
+</div><p style="margin-bottom:0"><button class="btn">Add event</button></p></form></div>
+{% for e in events %}
+<div class="card" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px">
+  <div style="width:64px;height:64px;border-radius:14px;background:var(--pri2);display:grid;place-items:center;font-size:30px;overflow:hidden">{% if e.cover %}<img src="{{ url_for('static', filename='uploads/' ~ e.cover) }}" alt="" style="width:100%;height:100%;object-fit:cover">{% else %}{{ e.icon }}{% endif %}</div>
+  <div style="flex:1;min-width:180px"><b>{{ e.title }}</b><div class="sub" style="margin:0">{% if e.date %}{{ e.date }} · {% endif %}{{ e.photos|length }} photo(s){% if e.videos %} · {{ e.videos|length }} video(s){% endif %}</div></div>
+  <a class="btn g" href="{{ url_for('gallery_edit', eid=e.id) }}">✏️ Edit</a>
+  <form method="post" action="{{ url_for('gallery_delete', eid=e.id) }}" onsubmit="return confirm('Delete this event and all its photos?')"><button class="btn r">🗑️ Delete</button></form>
+</div>
+{% else %}<p class="sub" style="margin-top:18px">No events yet, so the website shows its simple gallery. Add your first event above.</p>{% endfor %}
+{% endblock %}

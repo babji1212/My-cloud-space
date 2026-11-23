@@ -1,0 +1,21 @@
+/* child progress report - used by the staff student page and the parent portal */
+.pill.k{background:#7b2d8e22;color:#7b2d8e}.pill.ok{background:#1a8a3a22;color:#1a8a3a}.pill.b{background:#e31e2422;color:#c01218}.pill.w{background:#f59e0b22;color:#b45309}
+.rp-sec{margin-top:12px}.rp-sec h4,.rp-b h4{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rp-add{margin-left:auto;text-transform:none;letter-spacing:0;font-size:12px;font-weight:700;color:var(--pri,#0b4ea2);background:var(--pri2,#e6efff);padding:3px 10px;border-radius:20px;text-decoration:none}
+.rp-xgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:8px}
+.rp-xg{background:var(--alt,var(--bg));border-radius:14px;padding:8px 10px;min-width:0}.rp-xh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}.rp-xh small{color:var(--mut)}.rp-xh .pill{margin-left:auto}
+.rp-xg table{width:100%;font-size:12.5px;border-collapse:collapse}.rp-xg th,.rp-xg td{padding:3px 6px!important;text-align:left;border-bottom:1px solid var(--line)}.rp-xg tr:last-child td{border:0}.rp-xg th{font-size:11px;color:var(--mut);text-transform:uppercase}
+.rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.rp-b{background:var(--alt,var(--bg));border-radius:14px;padding:10px 12px;min-width:0}
+.rp-li{display:flex;flex-wrap:wrap;align-items:center;gap:3px 8px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px}.rp-li:last-child{border:0}.rp-li small{flex-basis:100%;color:var(--mut)}
+.rp-rt{margin-left:auto;display:inline-flex;gap:2px}.rp-rt form{display:inline}.rp-rt a,.rp-rt button{border:0;background:none;cursor:pointer;font-size:13px;padding:1px 4px;text-decoration:none}
+.rp-chips{display:flex;gap:5px;flex-wrap:wrap}.rp-chips span{background:var(--card);border-radius:20px;padding:2px 10px;font-size:12px;display:inline-flex;align-items:center;gap:4px}
+.rp-none{margin:0;color:var(--mut);font-size:13px}
+.rp-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:8px}.rp-av{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#7b2d8e,#f26522);color:#fff;font-size:24px;font-weight:800;display:grid;place-items:center}
+.rp-qa{display:flex;gap:8px;flex-wrap:wrap}.rp-dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:0;font-size:13.5px}.rp-dl dt{color:var(--mut);font-weight:700;font-size:12px}.rp-dl dd{margin:0;font-weight:600}
+.rp-sums{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.rp-sums div{background:var(--card);border-radius:10px;padding:5px 8px;text-align:center}.rp-sums small{display:block;color:var(--mut);font-size:11px;font-weight:700}.rp-sums b{font-size:15px}
+@media(max-width:760px){.rp-grid{grid-template-columns:1fr}}
+/* colour-coded report blocks */
+.rp-sec{border-left:5px solid #0b4ea2;padding-left:10px}
+.rp-grid .rp-b:nth-child(1){border-left:5px solid #f26522}.rp-grid .rp-b:nth-child(2){border-left:5px solid #7b2d8e}.rp-grid .rp-b:nth-child(3){border-left:5px solid #1a8a3a}.rp-grid .rp-b:nth-child(4){border-left:5px solid #d6247d}
+.rp-chart{display:block;width:100%;max-width:430px;height:auto;margin:2px 0 8px;background:var(--card,#fff);border-radius:12px}
+.rp-imgs{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.rp-im{position:relative;display:inline-block}.rp-im img{width:62px;height:62px;object-fit:cover;border-radius:10px;border:2px solid #fff;box-shadow:0 2px 6px #0003;display:block}.rp-im form{position:absolute;top:-6px;right:-6px}.rp-im button{border:0;background:#e31e24;color:#fff;width:18px;height:18px;border-radius:50%;font-size:10px;cursor:pointer;line-height:1;padding:0}

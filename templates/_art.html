@@ -1,0 +1,103 @@
+{# School-themed animated art: objects (pencil, eraser, chalk, pen, ruler, book, bag), kids and a blackboard #}
+{% macro sprite() %}<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="s-pencil" viewBox="0 0 24 100"><rect x="3" y="12" width="18" height="62" fill="#ffd200"/><rect x="8" y="12" width="3" height="62" fill="#f59e0b"/><rect x="14" y="12" width="3" height="62" fill="#fcd34d"/><rect x="3" y="4" width="18" height="10" fill="#cbd5e1"/><path d="M3 7h18M3 10h18" stroke="#94a3b8" stroke-width="1"/><rect x="3" y="0" width="18" height="8" rx="4" fill="#ef4a52"/><path d="M3 74h18L12 98z" fill="#f5d0a9"/><path d="M9.2 88h5.6L12 98z" fill="#334155"/></symbol>
+<symbol id="s-eraser" viewBox="0 0 60 32"><rect width="60" height="32" rx="8" fill="#ef4a52"/><rect x="18" width="24" height="32" fill="#0b4ea2"/><path d="M22 8h16M22 16h16M22 24h16" stroke="#bfdbfe" stroke-width="2" stroke-linecap="round"/><rect width="60" height="32" rx="8" fill="none" stroke="#00000022"/></symbol>
+<symbol id="s-chalk" viewBox="0 0 14 56"><rect x="1" width="12" height="56" rx="3" fill="currentColor"/><rect x="8.5" width="4.5" height="56" rx="2.2" fill="#000" opacity=".12"/><rect x="1" y="50" width="12" height="6" rx="3" fill="#000" opacity=".08"/></symbol>
+<symbol id="s-pen" viewBox="0 0 16 100"><rect x="3" y="12" width="10" height="62" rx="5" fill="#3b82f6"/><rect x="3" y="0" width="10" height="18" rx="3" fill="#1e40af"/><rect x="11" y="3" width="2" height="30" rx="1" fill="#93c5fd"/><rect x="5" y="30" width="6" height="3" rx="1.5" fill="#bfdbfe"/><path d="M3 74h10L8 92z" fill="#cbd5e1"/><path d="M6.6 88h2.8L8 98z" fill="#111827"/></symbol>
+<symbol id="s-ruler" viewBox="0 0 120 24"><rect width="120" height="24" rx="3" fill="#fcd34d"/><rect width="120" height="24" rx="3" fill="none" stroke="#b4530922"/><path d="M8 0v10M16 0v6M24 0v10M32 0v6M40 0v10M48 0v6M56 0v10M64 0v6M72 0v10M80 0v6M88 0v10M96 0v6M104 0v10M112 0v6" stroke="#92400e" stroke-width="1.5"/></symbol>
+<symbol id="s-book" viewBox="0 0 56 44"><path d="M0 9V40Q14 36 28 42Q42 36 56 40V9" fill="#7b2d8e"/><path d="M28 8Q14 2 3 6V37Q14 33 28 39Z" fill="#fff"/><path d="M28 8Q42 2 53 6V37Q42 33 28 39Z" fill="#f1f5f9"/><path d="M8 13Q17 11 24 14M8 19Q17 17 24 20M8 25Q17 23 24 26M32 14Q39 11 48 13M32 20Q39 17 48 19M32 26Q39 23 48 25" stroke="#94a3b8" stroke-width="1.4" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="s-bag" viewBox="0 0 52 64"><path d="M15 12Q26-4 37 12" stroke="#7f1d1d" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="4" y="10" width="44" height="52" rx="15" fill="#e31e24"/><rect x="12" y="36" width="28" height="19" rx="7" fill="#b3141a"/><path d="M14 28h24" stroke="#fecaca" stroke-width="3" stroke-linecap="round"/><circle cx="26" cy="45" r="3" fill="#ffd200"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></g></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v13c-3-1-6-1-8 1-2-2-5-2-8-1z"/><path d="M12 6v13"/></g></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></g></symbol>
+<symbol id="i-ball" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></g></symbol>
+<symbol id="i-teach" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/><path d="M22 9v6"/></g></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/><path d="M12 14v4M8 21h8M9 18h6"/></g></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-5L16 4l4 4L9 19z"/><path d="M14 6l4 4"/></g></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/><path d="M8 11h2M14 11h2"/></g></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 17l5-5 4 4 3-3 6 5"/></g></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></g></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></g></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 8h8M8 12h8M10 8c4 0 4 5 0 5l5 4"/></g></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></g></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></g></symbol>
+</defs></svg>{% endmacro %}
+
+{% macro ico(sym, w, h) %}<svg width="{{ w }}" height="{{ h }}" aria-hidden="true"><use href="#{{ sym }}" width="100%" height="100%"/></svg>{% endmacro %}
+{% macro obj(sym, w, h, st='') %}<svg class="dc" width="{{ w }}" height="{{ h }}" style="{{ st }}" aria-hidden="true"><use href="#{{ sym }}" width="100%" height="100%"/></svg>{% endmacro %}
+{% macro fo(sym, w, h, left, t, d, r) %}<span class="fo" style="left:{{ left }};--t:{{ t }}s;--d:{{ d }}s;--r:{{ r }}deg"><svg width="{{ w }}" height="{{ h }}"><use href="#{{ sym }}" width="100%" height="100%"/></svg></span>{% endmacro %}
+
+{% macro floaters() %}<div class="fls" aria-hidden="true">
+{{ fo('s-pencil',22,92,'4%',15,0,20) }}{{ fo('s-eraser',54,29,'12%',18,-6,-15) }}{{ fo('s-chalk',12,48,'21%',14,-3,30) }}{{ fo('s-pen',14,88,'31%',17,-10,-25) }}{{ fo('s-ruler',110,22,'40%',19,-4,35) }}
+{{ fo('s-book',52,42,'52%',16,-8,-10) }}{{ fo('s-bag',44,54,'62%',20,-12,12) }}{{ fo('s-pencil',20,84,'72%',15,-2,-30) }}{{ fo('s-chalk',11,44,'81%',18,-9,40) }}{{ fo('s-eraser',50,27,'89%',17,-5,20) }}{{ fo('s-pen',13,80,'96%',14,-11,-20) }}
+</div>{% endmacro %}
+
+{% macro kid(skin, hair, shirt, bottom, style='boy', cls='', st='') %}
+<svg class="kid {{ style }} {{ cls }}" style="{{ st }}" viewBox="0 0 100 150" aria-hidden="true">
+ <ellipse cx="50" cy="144" rx="27" ry="4" fill="#000" opacity=".18"/>
+ <g class="kb">
+  {% if style != 'tod' %}<rect x="29" y="56" width="42" height="36" rx="11" fill="#e31e24"/><rect x="36" y="74" width="28" height="12" rx="5" fill="#b3141a"/>{% endif %}
+  <g class="leg l1"><rect x="38" y="98" width="10" height="38" rx="5" fill="{{ skin }}"/><rect x="35" y="131" width="17" height="9" rx="4.5" fill="#334155"/></g>
+  <g class="leg l2"><rect x="52" y="98" width="10" height="38" rx="5" fill="{{ skin }}"/><rect x="48" y="131" width="17" height="9" rx="4.5" fill="#334155"/></g>
+  {% if style == 'girl' %}<path d="M33 86H67L75 114H25Z" fill="{{ bottom }}"/>{% else %}<rect x="34" y="86" width="32" height="26" rx="7" fill="{{ bottom }}"/>{% endif %}
+  <rect x="34" y="54" width="32" height="42" rx="12" fill="{{ shirt }}"/>
+  <path d="M43 54L50 63L57 54Z" fill="#fff"/>
+  {% if style == 'boy' %}<path d="M48 62h4l-1 14-1 2-1-2z" fill="#e31e24"/>{% endif %}
+  <g class="arm l"><rect x="24" y="57" width="10" height="32" rx="5" fill="{{ shirt }}"/><circle cx="29" cy="91" r="5.5" fill="{{ skin }}"/></g>
+  <g class="arm r"><rect x="66" y="57" width="10" height="32" rx="5" fill="{{ shirt }}"/><circle cx="71" cy="91" r="5.5" fill="{{ skin }}"/></g>
+  {% if style == 'girl' %}<circle cx="26" cy="38" r="9" fill="{{ hair }}"/><circle cx="74" cy="38" r="9" fill="{{ hair }}"/>{% endif %}
+  {% set hr = 24 if style == 'tod' else 21 %}{% set hy = 34 if style == 'tod' else 32 %}
+  <circle cx="50" cy="{{ hy }}" r="{{ hr }}" fill="{{ skin }}"/>
+  <path d="M{{ 50 - hr - 1 }} {{ hy - 2 }}Q{{ 50 - hr - 2 }} {{ hy - hr - 12 }} 50 {{ hy - hr - 4 }}Q{{ 50 + hr + 2 }} {{ hy - hr - 12 }} {{ 50 + hr + 1 }} {{ hy - 2 }}Q62 {{ hy - 14 }} 50 {{ hy - 12 }}Q38 {{ hy - 14 }} {{ 50 - hr - 1 }} {{ hy - 2 }}Z" fill="{{ hair }}"/>
+  {% if style == 'tod' %}<path d="M45 6Q50-4 56 6" stroke="{{ hair }}" stroke-width="4" fill="none" stroke-linecap="round"/>{% endif %}
+  {% if style == 'girl' %}<circle cx="29" cy="26" r="3.6" fill="#e31e24"/><circle cx="71" cy="26" r="3.6" fill="#e31e24"/>{% endif %}
+  <g class="eyes"><circle cx="42" cy="{{ hy + 1 }}" r="{{ 3.2 if style == 'tod' else 2.6 }}" fill="#1f2937"/><circle cx="58" cy="{{ hy + 1 }}" r="{{ 3.2 if style == 'tod' else 2.6 }}" fill="#1f2937"/></g>
+  <circle cx="37" cy="{{ hy + 9 }}" r="3.4" fill="#ff7a8a" opacity=".45"/><circle cx="63" cy="{{ hy + 9 }}" r="3.4" fill="#ff7a8a" opacity=".45"/>
+  <path d="M43 {{ hy + 9 }}Q50 {{ hy + 16 }} 57 {{ hy + 9 }}" stroke="#7a2e2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+ </g>
+</svg>{% endmacro %}
+{% macro boy(cls='', st='') %}{{ kid('#f1c27d','#2b2118','#ffffff','#0b4ea2','boy',cls,st) }}{% endmacro %}
+{% macro boy2(cls='', st='') %}{{ kid('#c68642','#111827','#ffd200','#1a8a3a','boy',cls,st) }}{% endmacro %}
+{% macro girl(cls='', st='') %}{{ kid('#e0ac69','#111827','#ffffff','#e31e24','girl',cls,st) }}{% endmacro %}
+{% macro girl2(cls='', st='') %}{{ kid('#8d5524','#3b2417','#f26522','#7b2d8e','girl',cls,st) }}{% endmacro %}
+{% macro tod(cls='', st='') %}{{ kid('#f1c27d','#92400e','#fde047','#fde047','tod',cls,st) }}{% endmacro %}
+
+{% macro board(k='a') %}
+<svg class="board" viewBox="0 0 320 214" aria-hidden="true">
+ <defs>
+  <clipPath id="c1{{ k }}"><rect x="22" y="28" width="0" height="62"><animate attributeName="width" dur="12s" repeatCount="indefinite" values="0;0;240;240;0;0" keyTimes="0;.05;.333;.85;.95;1"/></rect></clipPath>
+  <clipPath id="c2{{ k }}"><rect x="22" y="92" width="0" height="62"><animate attributeName="width" dur="12s" repeatCount="indefinite" values="0;0;240;240;0;0" keyTimes="0;.367;.667;.85;.95;1"/></rect></clipPath>
+ </defs>
+ <rect x="52" y="170" width="8" height="42" rx="3" fill="#8a5a2b"/><rect x="260" y="170" width="8" height="42" rx="3" fill="#8a5a2b"/>
+ <rect x="4" y="4" width="312" height="172" rx="12" fill="#b4743c"/>
+ <rect x="15" y="15" width="290" height="150" rx="7" fill="#1f4d3a"/><rect x="15" y="15" width="290" height="150" rx="7" fill="#fff" opacity=".04"/>
+ <rect x="36" y="171" width="248" height="8" rx="3" fill="#8a5a2b"/><rect x="48" y="166" width="22" height="6" rx="3" fill="#fff"/><rect x="76" y="168" width="14" height="5" rx="2.5" fill="#ffe600"/>
+ <g clip-path="url(#c1{{ k }})"><text x="30" y="76" font-size="44" fill="#f8fafc" font-family="'Segoe Print','Comic Sans MS','Bradley Hand',cursive">ABC abc</text></g>
+ <g clip-path="url(#c2{{ k }})"><text x="30" y="140" font-size="44" fill="#ffe600" font-family="'Segoe Print','Comic Sans MS','Bradley Hand',cursive">1 + 2 = 3</text></g>
+ <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;240 0;240 0" keyTimes="0;.05;.333;1" dur="12s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;.05;.333;.36;1" dur="12s" repeatCount="indefinite"/><rect x="26" y="60" width="22" height="7" rx="3" fill="#fff" transform="rotate(-35 26 60)"/></g>
+ <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;240 0;240 0" keyTimes="0;.367;.667;1" dur="12s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.366;.367;.667;.7;1" dur="12s" repeatCount="indefinite"/><rect x="26" y="124" width="22" height="7" rx="3" fill="#fff" transform="rotate(-35 26 124)"/></g>
+ <g><animateTransform attributeName="transform" type="translate" values="270 0;270 0;-4 0;-4 0" keyTimes="0;.85;.95;1" dur="12s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.849;.85;.95;.96;1" dur="12s" repeatCount="indefinite"/><rect x="0" y="40" width="26" height="86" rx="6" fill="#ef4a52"/><rect x="0" y="40" width="26" height="30" rx="6" fill="#0b4ea2"/></g>
+ <g fill="none" stroke="#ffe600" stroke-width="3" stroke-linecap="round" opacity=".9"><circle cx="268" cy="48" r="10" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"><animate attributeName="stroke-dashoffset" values="100;100;0;0;100;100" keyTimes="0;.05;.3;.85;.95;1" dur="12s" repeatCount="indefinite"/></circle><path d="M268 28v-8M268 76v-8M248 48h-8M296 48h-8M254 34l-6-6M288 62l6 6M254 62l-6 6M288 34l6-6" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"><animate attributeName="stroke-dashoffset" values="100;100;0;0;100;100" keyTimes="0;.2;.5;.85;.95;1" dur="12s" repeatCount="indefinite"/></path></g>
+</svg>{% endmacro %}
+
+{% macro scene() %}<div class="scene" aria-hidden="true">
+{{ girl('hide-sm','--dl:0s') }}{{ boy('','--dl:.5s') }}{{ board('h') }}{{ tod('','--dl:.2s') }}{{ girl2('hide-sm','--dl:.8s') }}{{ boy2('hide-sm','--dl:.3s') }}
+</div>{% endmacro %}
+
+{% macro parade() %}<div class="parade" aria-hidden="true">
+<div class="pk" style="--t:30s;--d:-4s">{{ boy('walk') }}</div><div class="pk" style="--t:34s;--d:-14s">{{ girl('walk') }}</div><div class="pk" style="--t:38s;--d:-22s">{{ tod('walk') }}</div><div class="pk" style="--t:32s;--d:-28s">{{ girl2('walk') }}</div><div class="pk" style="--t:36s;--d:-9s">{{ boy2('walk') }}</div>
+</div>{% endmacro %}
+
+{% macro dec(n) %}<div class="dec" aria-hidden="true">
+{% if n == 'about' %}{{ obj('s-pencil',24,100,'right:5%;top:40px;--r:35deg') }}{{ obj('s-eraser',58,31,'left:4%;bottom:60px;--r:-18deg') }}<div class="dk" style="right:2%;bottom:6px">{{ girl('','--dl:.3s') }}</div>
+{% elif n == 'specialities' %}{{ obj('s-pencil',22,92,'right:4%;top:50px;--r:30deg') }}{{ obj('s-ruler',120,24,'left:3%;bottom:60px;--r:-12deg') }}<div class="dk" style="left:2%;top:20px">{{ girl2('','--dl:.3s') }}</div>
+{% elif n == 'activities' %}{{ obj('s-ruler',120,24,'left:3%;top:46px;--r:-20deg') }}{{ obj('s-pen',16,100,'right:4%;top:50px;--r:25deg') }}<div class="dk" style="left:2%;bottom:6px">{{ boy2('','--dl:.1s') }}</div>
+{% elif n == 'teachers' %}<div class="dk" style="right:2%;top:14px">{{ board('t') }}</div>{{ obj('s-book',56,44,'left:3%;bottom:46px;--r:-10deg') }}{{ obj('s-chalk',14,56,'left:6%;top:60px;--r:30deg') }}
+{% elif n == 'admissions' %}<div class="dk" style="right:3%;top:18px">{{ tod('','--dl:.2s') }}</div>{{ obj('s-bag',52,64,'left:3%;top:60px;--r:-8deg') }}{{ obj('s-pencil',22,92,'right:12%;bottom:40px;--r:-35deg') }}
+{% elif n == 'facilities' %}{{ obj('s-book',56,44,'right:4%;top:44px;--r:12deg') }}{{ obj('s-ruler',120,24,'left:2%;bottom:56px;--r:15deg') }}{{ obj('s-eraser',54,29,'right:9%;bottom:40px;--r:-12deg') }}
+{% elif n == 'gallery' %}{{ obj('s-pen',16,100,'left:3%;top:50px;--r:-25deg') }}{{ obj('s-chalk',14,56,'right:6%;top:46px;--r:25deg;color:#fcd34d') }}{{ obj('s-bag',48,58,'right:3%;bottom:44px;--r:10deg') }}
+{% elif n == 'contact' %}<div class="dk" style="left:2%;bottom:6px">{{ tod('','--dl:.4s') }}</div><div class="dk" style="right:2%;bottom:6px">{{ girl('','--dl:.1s') }}</div>{{ obj('s-pencil',22,92,'right:9%;top:46px;--r:30deg') }}{{ obj('s-eraser',54,29,'left:9%;top:60px;--r:-14deg') }}
+{% elif n == 'portal' %}{{ obj('s-pencil',22,92,'right:4%;top:40px;--r:30deg') }}{{ obj('s-eraser',54,29,'left:2%;bottom:80px;--r:-14deg') }}{{ obj('s-book',56,44,'right:3%;bottom:70px;--r:10deg') }}
+{% elif n == 'login' %}{{ floaters() }}<div class="dk" style="left:3%;top:24px">{{ board('l') }}</div><div class="dk grp" style="left:3%;bottom:54px">{{ girl('','--dl:.2s') }}{{ tod('','--dl:.5s') }}</div><div class="dk grp" style="right:3%;bottom:54px">{{ boy2('','--dl:.6s') }}{{ girl2('','--dl:.1s') }}</div>
+{% endif %}</div>{% endmacro %}

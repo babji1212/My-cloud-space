@@ -1,0 +1,27 @@
+{% extends "teacher_base.html" %}{% block title %}Dashboard{% endblock %}{% block heading %}Dashboard{% endblock %}
+{% block body %}
+<section class="thero"><p class="tgreet" id="greet">Welcome</p><h1>{{ g.t.name }}</h1><p class="tdate" id="tdate"></p>
+  <div class="tchips">{% for c in cards %}<span>{{ c.label }}</span>{% else %}<span>No class assigned yet</span>{% endfor %}</div></section>
+{% if not cards %}<div class="tcard empty">The school office has not assigned a class to you yet. Please contact the Admin.</div>{% else %}
+<div class="tstats">
+ <div class="tstat"><div class="ic" style="background:#0b4ea2"><svg><use href="#i-user" width="100%" height="100%"/></svg></div><b>{{ n_students }}</b><span>My students</span></div>
+ <div class="tstat"><div class="ic" style="background:#7b2d8e"><svg><use href="#i-building" width="100%" height="100%"/></svg></div><b>{{ cards|length }}</b><span>My classes / sections</span></div>
+ <div class="tstat"><div class="ic" style="background:#1a8a3a"><svg><use href="#i-cal" width="100%" height="100%"/></svg></div><b>{{ cards|selectattr('marked')|list|length }}/{{ cards|length }}</b><span>Attendance marked today</span></div>
+ <div class="tstat"><div class="ic" style="background:#e31e24"><svg><use href="#i-star" width="100%" height="100%"/></svg></div><b>{{ n_att }}</b><span>Need attention</span></div></div>
+<h2 class="th">Today's attendance</h2>
+<div class="tcards">{% for c in cards %}<div class="acard"><h3>{{ c.label }}<small>{{ c.n }} students</small></h3>
+  {% if c.marked %}<div class="cnt"><div><b style="color:var(--g)">{{ c.present }}</b>Present</div><div><b style="color:var(--r)">{{ c.absent }}</b>Absent</div><div><b style="color:#b45309">{{ c.leave }}</b>Leave</div></div>{% else %}<span class="pillt w">Not marked yet</span>{% endif %}
+  <a class="tbtn {{ 'g' if c.marked }} sm" href="{{ url_for('t_attendance', c=c.key) }}">{{ 'Edit attendance' if c.marked else 'Mark attendance' }}</a></div>{% endfor %}</div>
+<h2 class="th">Quick actions</h2>
+<div class="qa"><a href="{{ url_for('t_attendance') }}"><span class="ic" style="background:#1a8a3a"><svg><use href="#i-cal" width="100%" height="100%"/></svg></span>Attendance</a><a href="{{ url_for('t_marks') }}"><span class="ic" style="background:#0b4ea2"><svg><use href="#i-pencil" width="100%" height="100%"/></svg></span>Enter marks</a>
+<a href="{{ url_for('t_students') }}"><span class="ic" style="background:#7b2d8e"><svg><use href="#i-user" width="100%" height="100%"/></svg></span>My students</a><a href="{{ url_for('t_report') }}"><span class="ic" style="background:#f26522"><svg><use href="#i-trophy" width="100%" height="100%"/></svg></span>Class report</a>
+<a href="{{ url_for('t_notices') }}"><span class="ic" style="background:#d6247d"><svg><use href="#i-book" width="100%" height="100%"/></svg></span>Homework &amp; notices</a><a href="{{ url_for('teacher_password') }}"><span class="ic" style="background:#60708f"><svg><use href="#i-lock" width="100%" height="100%"/></svg></span>Password</a></div>
+<div class="tgrid2" style="margin-top:14px">
+ <div class="tcard"><h3 style="font-size:15px;margin-bottom:6px">Attendance - last 2 weeks</h3>{% if trend %}<div class="chart">{% for d, v in trend %}<div class="tb"><b>{{ v }}</b><i style="height:{{ v }}%"></i><span>{{ d }}</span></div>{% endfor %}</div>{% else %}<p class="empty" style="padding:20px 0">Mark attendance to see the trend.</p>{% endif %}</div>
+ <div class="tcard"><h3 style="font-size:15px;margin-bottom:6px">Students needing attention <a href="{{ url_for('t_report') }}" style="float:right;font-size:12.5px;color:var(--p)">All →</a></h3>
+  {% for a in att %}<div class="row"><div class="av">{{ a.name[:1] }}</div><div class="info"><b>{{ a.name }}</b><small>{{ a.why[0] }}</small></div><a class="tbtn g sm" href="{{ url_for('t_student', sid=a.sid) }}">View</a></div>{% else %}<p class="empty" style="padding:20px 0">🎉 Nobody needs attention.</p>{% endfor %}</div></div>
+<div class="tgrid2" style="margin-top:12px">
+ <div class="tcard"><h3 style="font-size:15px;margin-bottom:6px">My recent notices <a href="{{ url_for('t_notices') }}" style="float:right;font-size:12.5px;color:var(--p)">Post →</a></h3>{% for n in notices %}<div class="row"><div class="info"><b>{{ n.title }}</b><small>{{ n.kind }} · Class {{ n.audience }} · {{ n.date }}</small></div></div>{% else %}<p class="empty" style="padding:16px 0">Nothing posted yet.</p>{% endfor %}</div>
+ <div class="tcard"><h3 style="font-size:15px;margin-bottom:6px">Upcoming school events</h3>{% for d, t1, x in upcoming %}<div class="row"><div class="info"><b>{{ t1 }}</b><small>{{ d }}{% if x %} · {{ x }}{% endif %}</small></div></div>{% else %}<p class="empty" style="padding:16px 0">No events listed.</p>{% endfor %}</div></div>
+{% endif %}{% endblock %}
+{% block scripts %}<script>const h=new Date().getHours();document.getElementById('greet').textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+' 👋';document.getElementById('tdate').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});</script>{% endblock %}

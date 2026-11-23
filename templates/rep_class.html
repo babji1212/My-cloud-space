@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% from "_reptabs.html" import tabs with context %}{% from "_charts.html" import hbars %}
+{% block body %}{{ tabs('rep_class', 'rep_class_xlsx') }}
+<h1>🏫 Class performance</h1>
+<form method="get" class="card tools" style="margin-bottom:14px"><input type="hidden" name="year" value="{{ ay }}">
+  <select name="cls" style="width:auto" required><option value="">Class…</option>{% for c in classes %}<option value="{{ c }}" {{ 'selected' if c == cls }}>Class {{ c }}</option>{% endfor %}</select>
+  <select name="exam" style="width:auto" required><option value="">Exam…</option>{% for n in names %}<option {{ 'selected' if n == exam }}>{{ n }}</option>{% endfor %}</select><button class="btn">Show report</button></form>
+{% if not data %}<p class="sub">Choose a class and an exam to see its performance.</p>
+{% elif not data.rows %}<div class="card empty">No marks found for Class {{ cls }} · {{ exam }} in {{ ay or 'all years' }}.</div>
+{% else %}{% set st = data.stats %}
+<div class="grid"><div class="card stat"><div class="v">{{ st.n }}</div><div class="l">Students with marks</div></div><div class="card stat"><div class="v">{{ st.avg }}%</div><div class="l">Class average</div></div>
+<div class="card stat"><div class="v">{{ st.pass_pct }}%</div><div class="l">Passed all subjects ({{ st.passed }} of {{ st.n }})</div></div><div class="card stat"><div class="v">{{ st.hi }}%</div><div class="l">Highest</div></div>
+<div class="card stat"><div class="v">{{ st.lo }}%</div><div class="l">Lowest</div></div><div class="card stat"><div class="v" style="color:var(--bad)">{{ st.failed }}</div><div class="l">Need help</div></div></div>
+<div class="two"><div class="card"><h3>Subject averages</h3>{{ hbars(subj_bars, '#7b2d8e', '%') }}</div>
+<div class="card wrap"><h3>Subject details</h3><table><thead><tr><th>Subject</th><th>Avg %</th><th>High</th><th>Low</th><th>Pass %</th></tr></thead><tbody>{% for s in data.subj_stats %}<tr><td>{{ s.name }}</td><td style="{{ heat(s.avg) }}"><b>{{ s.avg }}</b></td><td>{{ s.hi }}</td><td>{{ s.lo }}</td><td>{{ s.pass_pct }}%</td></tr>{% endfor %}</tbody></table></div></div>
+<div class="card wrap" style="margin-top:14px"><h3>🏅 Toppers</h3><table><thead><tr><th>Rank</th><th>Student</th><th>%</th></tr></thead><tbody>{% for r in data.rows[:10] %}<tr><td>{{ r.rank }}</td><td><a href="{{ url_for('student_profile', sid=r.sid) }}" style="color:var(--pri);font-weight:600">{{ r.name }}</a></td><td><b>{{ r.pct }}%</b></td></tr>{% endfor %}</tbody></table></div>
+<div class="card wrap" style="margin-top:14px"><h3>All students</h3><table><thead><tr><th>Rank</th><th>Roll</th><th>Student</th>{% for s in data.subjects %}<th>{{ s }}</th>{% endfor %}<th>Total %</th><th>Result</th></tr></thead><tbody>
+{% for r in data.rows %}<tr><td>{{ r.rank }}</td><td>{{ r.roll }}</td><td>{{ r.name }}</td>{% for s in data.subjects %}{% set v = r.subj.get(s) %}<td style="{% if v and not v.absent and v.mx %}{{ heat(v.got / v.mx * 100) }}{% endif %}">{% if v %}{% if v.absent %}Abs{% else %}{{ v.got|n }}{% endif %}{% endif %}</td>{% endfor %}<td><b>{{ r.pct }}</b></td>
+<td>{% if r.passed %}<span class="pill ok">Pass</span>{% else %}<span class="pill b">Needs help: {{ r.fails|join(', ') }}</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>{% endif %}
+{% endblock %}

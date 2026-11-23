@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>💾 Backups</h1><p class="sub">A copy of your data (<code>school.db</code>) is saved automatically once a day and the last 14 copies are kept in the <code>backups</code> folder. Also copy the <code>static/uploads</code> folder (photos and videos) to a pen drive now and then.</p>
+<div class="card wrap">{% if files %}<table><thead><tr><th>Backup</th><th>Size</th><th></th></tr></thead><tbody>{% for f, kb in files %}<tr><td>{{ f }}</td><td>{{ kb }} KB</td><td><a class="btn g" style="padding:5px 12px" href="{{ url_for('backup_download', name=f) }}">⬇ Download</a></td></tr>{% endfor %}</tbody></table>{% else %}<div class="empty">The first automatic backup is made the next time the website is used.</div>{% endif %}</div>
+{% endblock %}

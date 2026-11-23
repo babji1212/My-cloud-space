@@ -1,0 +1,6 @@
+{% extends "teacher_base.html" %}{% block title %}Students{% endblock %}{% block heading %}My students{% endblock %}
+{% block body %}<form method="get" class="tbar-f"><div><label>Class / section</label><select name="c" onchange="this.form.submit()"><option value="">All my classes</option>{% for v, lb in assigns %}<option value="{{ v }}" {{ 'selected' if v == sel }}>{{ lb }}</option>{% endfor %}</select></div>
+<div style="flex:2"><label>Search</label><input name="q" value="{{ q }}" placeholder="Name, roll no, parent, mobile…" type="search"></div><button class="tbtn">Search</button></form>
+<div class="tcard" style="padding:6px 16px"><p style="margin:10px 0 0;color:var(--mut);font-size:13px;font-weight:700">{{ studs|length }} student(s)</p>
+{% for s in studs %}<div class="row"><div class="av">{{ s.name[:1] }}</div><div class="info"><b>{{ s.name }}</b><small>Class {{ s.cls }}{% if s.section %} · {{ s.section }}{% endif %}{% if s.roll %} · Roll {{ s.roll }}{% endif %}{% if s.parent %} · {{ s.parent }}{% endif %}</small></div>
+  {% if s.phone %}<a class="tbtn g sm" href="tel:{{ s.phone }}" title="Call parent">📞</a>{% endif %}<a class="tbtn sm" href="{{ url_for('t_student', sid=s.id) }}">View</a></div>{% else %}<p class="empty">No students found.</p>{% endfor %}</div>{% endblock %}

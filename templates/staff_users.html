@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>🧑‍🏫 Staff PIN Logins</h1><p class="sub">Give each staff member their own PIN at <b>Staff Login</b> (the office area). For class teachers use <a href="{{ url_for('class_teachers') }}" style="color:var(--pri)">Class Teachers (portal)</a> instead. The Activity Log then shows who added or changed what. Teachers can add and edit marks, attendance, activities and notices, but cannot delete records or change settings.</p>
+<div class="card"><h3>➕ Create a teacher login</h3><form method="post" class="fg"><div><label>Teacher name</label><input name="name" required></div><div><label>PIN (at least 4 characters)</label><input name="pin" required></div>
+<div style="display:flex;align-items:flex-end"><button class="btn">Create login</button></div></form></div>
+<div class="card wrap" style="margin-top:14px">{% if users %}<table><thead><tr><th>Teacher</th><th>Status</th><th>Reset PIN</th><th></th></tr></thead><tbody>
+{% for u in users %}<tr><td><b>{{ u.name }}</b></td><td>{% if u.active %}<span class="pill ok">Active</span>{% else %}<span class="pill b">Switched off</span>{% endif %}</td>
+<td><form method="post" action="{{ url_for('staff_user_update', uid=u.id) }}" style="display:flex;gap:6px"><input type="hidden" name="act" value="pin"><input name="pin" placeholder="New PIN" style="width:120px"><button class="btn g" style="padding:5px 12px">Change</button></form></td>
+<td style="white-space:nowrap"><form method="post" action="{{ url_for('staff_user_update', uid=u.id) }}" style="display:inline"><input type="hidden" name="act" value="toggle"><button class="btn g" style="padding:5px 12px">{{ 'Switch off' if u.active else 'Switch on' }}</button></form>
+<form method="post" action="{{ url_for('staff_user_update', uid=u.id) }}" style="display:inline" onsubmit="return confirm('Delete this teacher login?')"><input type="hidden" name="act" value="delete"><button class="btn r" style="padding:5px 12px">🗑️</button></form></td></tr>{% endfor %}</tbody></table>
+{% else %}<div class="empty">No teacher logins yet. Everyone currently shares the Staff PIN.</div>{% endif %}</div>
+{% endblock %}

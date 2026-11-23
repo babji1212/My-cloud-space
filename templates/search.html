@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}<h1>🔎 Search</h1>
+<form method="get" class="tools"><input name="q" value="{{ q }}" placeholder="Name, mobile number, parent, roll no…" autofocus><button class="btn">Search</button></form>
+{% if short %}<p class="sub">Type at least 2 letters or digits.</p>{% elif not res %}<div class="card empty">Nothing found for “{{ q }}”.</div>{% endif %}
+{% for title, rows in res.items() %}<div class="card" style="margin-bottom:12px"><h3>{{ title }} ({{ rows|length }})</h3>
+{% for r in rows %}<div style="padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px">
+{% if title == 'Students' %}<a href="{{ url_for('student_profile', sid=r.id) }}" style="color:var(--pri);font-weight:700">{{ r.name }}</a> · Class {{ r.cls }}{% if r.roll %} · Roll {{ r.roll }}{% endif %} · {{ r.parent }} · {{ r.phone }}
+{% elif title == 'Teachers' %}<a href="{{ url_for('listing', m='teachers', q=r.name) }}" style="color:var(--pri);font-weight:700">{{ r.name }}</a> · {{ r.subject }} · {{ r.phone }}
+{% elif title == 'Admissions' %}<a href="{{ url_for('listing', m='admissions', q=r.name) }}" style="color:var(--pri);font-weight:700">{{ r.name }}</a> · Class {{ r.cls }} · {{ r.parent }} · {{ r.phone }} · {{ r.status }}
+{% elif title == 'Fee records' %}<a href="{{ url_for('fee_receipt', rid=r.id) }}" style="color:var(--pri);font-weight:700">{{ r.student }}</a> · {{ r.term }} · paid {{ r.paid|inr }} of {{ r.due|inr }} · {{ r.date }}
+{% else %}<a href="{{ url_for('parent_edit', pid=r.id) }}" style="color:var(--pri);font-weight:700">{{ r.username }}</a> · {{ r.name }}{% endif %}</div>{% endfor %}</div>{% endfor %}
+{% endblock %}

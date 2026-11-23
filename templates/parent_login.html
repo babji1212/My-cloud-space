@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0f766e">
+<title>Parent Sign in · {{ SCHOOL }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css', v='2') }}"></head>
+<body class="lg">
+{% import "_art.html" as art %}{{ art.sprite() }}
+<div class="lg-wrap">
+
+  <aside class="lg-side" style="--img:url('{{ imgurl(SITE.images.hero) }}')" aria-hidden="true">
+    <i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i>
+    <div class="side-top"><div class="ring">{% if has_logo %}<img src="{{ url_for('static', filename='logo.png', v=logo_v) }}" alt="">{% else %}🌱{% endif %}</div>
+      <div><b>R K LITTLE BUDS</b><small>(E.M) High School</small></div></div>
+    <div class="side-mid">
+      <span class="chip"><svg><use href="#i-user" width="100%" height="100%"/></svg>Parent portal</span>
+      <h2>Stay close to your child's school life, <em>anytime, anywhere</em>.</h2>
+      <ul class="feat">
+        <li><span class="ic" style="background:#ff6b4a"><svg><use href="#i-trophy" width="100%" height="100%"/></svg></span>Marks, exams &amp; report cards</li>
+        <li><span class="ic" style="background:#16a34a"><svg><use href="#i-cal" width="100%" height="100%"/></svg></span>Daily attendance</li>
+        <li><span class="ic" style="background:#f59e0b"><svg><use href="#i-coin" width="100%" height="100%"/></svg></span>Fees, dues &amp; receipts</li>
+        <li><span class="ic" style="background:#0f766e"><svg><use href="#i-ball" width="100%" height="100%"/></svg></span>Activities &amp; school notices</li></ul>
+    </div>
+    <div class="side-bot"><span class="te">విద్య · విజ్ఞానం · వికాసం</span><span>© {{ today[:4] }} {{ SCHOOL }}</span></div>
+  </aside>
+
+  <main class="lg-main">
+    <div class="mob-brand"><div class="ring">{% if has_logo %}<img src="{{ url_for('static', filename='logo.png', v=logo_v) }}" alt="">{% else %}🌱{% endif %}</div><div><b>R K LITTLE BUDS</b><small>(E.M) High School</small></div></div>
+    <div class="lg-card" id="card" data-role="parent">
+      <div class="badge"><svg><use href="#i-user" width="100%" height="100%"/></svg></div>
+      <h1>Parent sign in</h1>
+      <p class="sub">See your child's marks, attendance, fees and school notices.</p>
+
+      <form method="post" id="lf" autocomplete="on">
+        {% for msg in get_flashed_messages() %}<div class="alert" role="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.5"/></svg><span>{{ msg }}</span></div>{% endfor %}
+        <label class="lbl" for="un">Username</label>
+        <div class="fld noeye"><svg><use href="#i-phone" width="100%" height="100%"/></svg>
+          <input type="text" name="username" id="un" placeholder="Your mobile number" autocomplete="username" inputmode="text" autocapitalize="none" autocorrect="off" required autofocus></div>
+        <label class="lbl" for="pin" style="margin-top:16px">Password</label>
+        <div class="fld"><svg><use href="#i-lock" width="100%" height="100%"/></svg>
+          <input type="password" name="pin" id="pin" placeholder="Enter your password" autocomplete="current-password" autocapitalize="none" autocorrect="off" required>
+          <button type="button" class="eye" id="eye" aria-label="Show or hide password">Show</button></div>
+        <div class="caps" id="caps"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>Caps Lock is on</div>
+        <button class="go" id="go"><span id="gt">Sign in</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </form>
+
+      <div class="secure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Private area. Only you can see your child's details. Never share your password.</span></div>
+      <p class="help">Forgot your password? <b>Contact the school office</b> to reset it.</p>
+      <div style="text-align:center"><a class="back" href="{{ url_for('home') }}">← Back to school website</a></div>
+    </div>
+    <p class="copy">© {{ today[:4] }} {{ SCHOOL }}. For parents &amp; guardians.</p>
+  </main>
+</div>
+<script>
+const pin=document.getElementById('pin');document.getElementById('eye').onclick=function(){const s=pin.type==='password';pin.type=s?'text':'password';this.textContent=s?'Hide':'Show'};
+const caps=document.getElementById('caps'),cp=e=>{if(e.getModifierState)caps.classList.toggle('on',e.getModifierState('CapsLock'))};pin.addEventListener('keydown',cp);pin.addEventListener('keyup',cp);pin.addEventListener('blur',()=>caps.classList.remove('on'));
+document.getElementById('lf').addEventListener('submit',()=>{const b=document.getElementById('go');b.classList.add('loading');document.getElementById('gt').textContent='Signing in…'});
+</script>
+</body></html>

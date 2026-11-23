@@ -1,0 +1,28 @@
+{% extends "teacher_base.html" %}{% from "_report.html" import chart %}{% block title %}{{ kid.name }}{% endblock %}{% block heading %}Student{% endblock %}
+{% block body %}
+<p style="margin:0 0 10px"><a href="{{ url_for('t_students') }}" style="color:var(--p);font-weight:700;font-size:14px">← My students</a></p>
+<div class="tcard"><div class="pc"><div class="big">{{ kid.name[:1] }}</div>
+  <div style="flex:1;min-width:180px"><h1 style="font-size:22px">{{ kid.name }}</h1>
+    <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><span class="pillt k">Class {{ kid.cls }}{% if kid.section %} · {{ kid.section }}{% endif %}</span>{% if kid.roll %}<span class="pillt">Roll {{ kid.roll }}</span>{% endif %}
+      {% if R.avg is not none %}<span class="pillt ok">Average {{ R.avg }}%</span>{% endif %}{% if R.att_pct is not none %}<span class="pillt {{ 'ok' if R.att_pct >= 75 else 'b' }}">Attendance {{ R.att_pct }}%</span>{% endif %}</div></div></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">{% if kid.phone %}<a class="tbtn sm" href="tel:{{ kid.phone }}">📞 Call parent</a><a class="tbtn g sm" href="https://wa.me/91{{ kid.phone|replace(' ', '')|replace('+91', '') }}" target="_blank" rel="noopener">💬 WhatsApp</a>{% endif %}<a class="tbtn g sm" href="{{ url_for('t_report_card', sid=kid.id) }}" target="_blank">🖨️ Report card</a></div>
+  {% if info %}<div style="display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin-top:14px;font-size:13.5px">{% for l, v in info %}<span style="color:var(--mut);font-weight:700;font-size:12px">{{ l }}</span><b>{{ v }}</b>{% endfor %}</div>{% endif %}</div>
+
+<h2 class="th">Exams &amp; marks</h2>
+<div class="tcard">{{ chart(R) }}
+{% for g1 in R.exams %}<div class="xg" style="margin-top:8px"><h4>{{ g1.name }}<small style="color:var(--mut);font-weight:600">{{ g1.date }}</small>{% if g1.pct is not none %}<span class="pillt {{ 'ok' if g1.pct >= 60 else ('w' if g1.pct >= 35 else 'b') }}">{{ g1.got|n }}/{{ g1.mx|n }} · {{ g1.pct }}%</span>{% endif %}{% if g1.rank %}<span class="pillt k" style="margin-left:0">Rank {{ g1.rank }}/{{ g1.of }}</span>{% endif %}</h4>
+  <div class="twrap"><table class="tt"><tbody>{% for r in g1.rows %}<tr><td>{{ r.subject }}</td><td>{% if r.absent %}<span class="pillt b">Absent</span>{% else %}{{ r.got|n }}/{{ r.mx|n }}{% endif %}</td><td>{% if r.pct is not none %}{{ r.pct }}%{% endif %}</td></tr>{% endfor %}</tbody></table></div></div>{% else %}<p class="empty" style="padding:14px 0">No exam marks yet.</p>{% endfor %}</div>
+
+<div class="tgrid2" style="margin-top:12px">
+ <div class="tcard"><h3 style="font-size:15px;margin-bottom:8px">Attendance by month</h3>{% for r in R.attendance %}<span class="pillt {{ 'ok' if (r.pct or 0) >= 75 else 'b' }}" style="margin:2px">{{ r.month }} · {{ r.present|n }}/{{ r.working|n }}{% if r.pct is not none %} ({{ r.pct }}%){% endif %}</span>{% else %}<p class="empty" style="padding:10px 0">No attendance yet.</p>{% endfor %}</div>
+ <div class="tcard"><h3 style="font-size:15px;margin-bottom:8px">Competitive exams &amp; activities</h3>
+  {% for r in R.competitive %}<div class="row"><div class="info"><b>{{ r.exam }}</b><small>{{ r.status }}{% if r.score %} · {{ r.score }}{% endif %}</small></div></div>{% endfor %}
+  {% for r in R.activities %}<div class="row"><div class="info"><b>{{ r.title or r.kind }}</b><small>{{ r.award }} {{ r.date }}</small></div></div>{% endfor %}
+  {% if not R.competitive and not R.activities %}<p class="empty" style="padding:10px 0">Nothing recorded.</p>{% endif %}</div></div>
+
+<h2 class="th" id="remarks">Teacher remarks</h2>
+<div class="tcard">
+ <form method="post" action="{{ url_for('t_remark', sid=kid.id) }}"><div class="tbar-f" style="margin-bottom:8px"><div style="max-width:220px"><label>Type</label><select name="kind">{% for k in kinds %}<option>{{ k }}</option>{% endfor %}</select></div></div>
+  <textarea name="remark" maxlength="500" placeholder="Write a remark about this student…" required></textarea><button class="tbtn" style="margin-top:10px">Save remark</button></form>
+ <div style="margin-top:12px">{% for r in R.remarks %}<div class="row"><div class="info"><b>{{ r.kind }}</b><small style="color:var(--ink);font-size:13.5px">{{ r.remark }}</small><small>{{ r.date }}{% if r.by %} · {{ r.by }}{% endif %}</small></div></div>{% endfor %}</div></div>
+{% endblock %}

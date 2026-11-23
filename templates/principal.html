@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>🔓 Admin Panel</h1><p class="sub">Edit data, add or remove fields, back up and manage security.</p>
+<div class="card"><h3>🌐 School website</h3><p class="sub" style="margin-bottom:12px">Edit the public home page: banner, about, all activity tabs, admissions, facilities, gallery photos, logo and contact details.</p><a class="btn" href="{{ url_for('website_editor') }}">Edit school website</a> <a class="btn g" href="{{ url_for('home') }}" target="_blank" rel="noopener">View website ↗</a></div>
+<div class="card"><h3>👨‍👩‍👧 Parent logins</h3><p class="sub" style="margin-bottom:12px">Create, edit or delete parent accounts. Parents sign in to see their child's full details, fees and teachers.</p><a class="btn" href="{{ url_for('parents_admin') }}">Manage parent logins</a></div>
+<div class="card"><h3>✏️ Data editor</h3><p class="sub" style="margin-bottom:12px">Open a section. Edit and delete buttons are active while you are logged in. Use the class dropdown to work class-wise.</p>
+{% for k, mod in MODULES.items() %}<a class="btn g" href="{{ url_for('listing', m=k) }}">{{ mod.icon }} {{ mod.title }}</a> {% endfor %}</div>
+{% for k, mod in MODULES.items() %}
+<div class="card"><h3>{{ mod.icon }} {{ mod.title }} fields</h3>
+  <div class="chips" style="margin-bottom:12px">{% for f in base_fields[k] %}<span class="pill">{{ f[1] }}</span>{% endfor %}
+  {% for f in custom[k] %}<span class="pill ok">{{ f.label }} ({{ f.type }})
+    <form method="post" action="{{ url_for('delete_field', fid=f.fid) }}" style="display:inline" onsubmit="return confirm('Remove this field?')"><button style="border:0;background:none;cursor:pointer;color:inherit">✕</button></form></span>{% endfor %}</div>
+  <form method="post" action="{{ url_for('add_field') }}" class="tools" style="margin:0"><input type="hidden" name="module" value="{{ k }}">
+    <input name="label" placeholder="New field name" required>
+    <select name="type"><option value="text">Text</option><option value="number">Number</option><option value="date">Date</option><option value="select">Dropdown</option></select>
+    <input name="options" placeholder="Dropdown options, comma separated"><button class="btn">+ Add field</button></form></div>
+{% endfor %}
+<div class="card"><h3>Backup &amp; security</h3><div class="tools" style="margin:0">
+  <a class="btn g" href="{{ url_for('backup') }}">⬇ Download backup</a>
+  <form method="post" action="{{ url_for('change_pin') }}" class="tools" style="margin:0"><input type="hidden" name="which" value="admin"><input type="password" name="pin" placeholder="New Admin PIN (min 4)"><button class="btn g">Change Admin PIN</button></form>
+  <form method="post" action="{{ url_for('change_pin') }}" class="tools" style="margin:0"><input type="hidden" name="which" value="staff"><input type="password" name="pin" placeholder="New Staff PIN (min 4)"><button class="btn g">Change Staff PIN</button></form>
+  <a class="btn r" href="{{ url_for('logout') }}">🔒 Logout</a></div></div>
+{% endblock %}

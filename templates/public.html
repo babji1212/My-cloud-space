@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ SCHOOL }}</title>
+<meta name="description" content="{{ SCHOOL }} - {{ SITE.range_en }}. {{ SITE.recognised }}. {{ SITE.address }}. Admissions are in progress.">
+<meta property="og:title" content="{{ SCHOOL }}"><meta property="og:description" content="{{ SITE.range_en }} · {{ SITE.recognised }}"><meta property="og:type" content="website">{% if has_logo %}<meta property="og:image" content="{{ request.url_root }}static/logo.png">{% endif %}
+<meta name="theme-color" content="#0f766e"><link rel="manifest" href="{{ url_for('manifest') }}"><link rel="apple-touch-icon" href="{{ url_for('static', filename='icon-192.png') }}">
+<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "School", "name": SCHOOL, "url": request.url_root, "telephone": SITE.phone, "address": SITE.address, "description": SITE.range_en ~ " - " ~ SITE.recognised}|tojson }}</script><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=Noto+Sans+Telugu:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="{{ url_for('static', filename='home.css', v='30') }}"></head>
+<body>
+{% import "_art.html" as art %}{{ art.sprite() }}
+<div id="pg"></div>
+{% macro ni(href, icon, label, c, te='') %}<a class="ni" href="{{ href }}" style="--c:{{ c }}"><span class="ib"><svg width="17" height="17" aria-hidden="true"><use href="#{{ icon }}" width="100%" height="100%"/></svg></span><span class="nl" data-te="{{ te }}">{{ label }}</span></a>{% endmacro %}
+{% macro logo() %}{% if has_logo %}<img src="{{ url_for('static', filename='logo.png', v=logo_v) }}" alt="School logo">{% else %}🌱{% endif %}{% endmacro %}
+<header><div class="bar">
+  <a href="#home" class="brand"><span class="logo">{{ logo() }}</span><span>R K LITTLE BUDS<small>(E.M) High School</small></span></a>
+  <button class="mb" id="mb" aria-label="Menu">☰</button>
+  <nav id="nav">{{ ni('#home','i-home','Home','#0b4ea2','హోమ్') }}{{ ni('#about','i-book','About','#7b2d8e','మా గురించి') }}{{ ni('#specialities','i-star','Specialities','#d9500f','ప్రత్యేకతలు') }}{{ ni('#activities','i-ball','Activities','#e31e24','కార్యకలాపాలు') }}{% if teachers %}{{ ni('#teachers','i-teach','Teachers','#1a8a3a','ఉపాధ్యాయులు') }}{% endif %}{% if SITE.results and SITE.results.total %}{{ ni('#results','i-trophy','Results','#d6247d','ఫలితాలు') }}{% endif %}{{ ni('#admissions','i-pencil','Admissions','#0b4ea2','ప్రవేశాలు') }}{{ ni('#facilities','i-building','Campus','#7b2d8e','ప్రాంగణం') }}{{ ni('#gallery','i-image','Gallery','#d9500f','గ్యాలరీ') }}{{ ni('#contact','i-phone','Contact','#1a8a3a','సంప్రదించండి') }}<button class="lang" id="lang" type="button" title="తెలుగు / English">తె / EN</button><div class="dd"><a class="login" href="{{ url_for('parent_login') }}" target="_blank" rel="noopener"><svg width="16" height="16" aria-hidden="true"><use href="#i-key" width="100%" height="100%"/></svg>Login ▾</a><div class="ddm"><a href="{{ url_for('parent_login') }}" target="_blank" rel="noopener">👨‍👩‍👧 Parent Login</a><a href="{{ url_for('login') }}" target="_blank" rel="noopener">🛠️ Staff Login</a></div></div></nav>
+</div></header>
+{% if announcements %}{% set dur = [announcements|join(' ')|length * 0.4, 20]|max|round|int %}
+<div class="anno" role="region" aria-label="Important announcements"><span class="alab"><i></i>Announcements</span><div class="aview"><div class="atrack" style="--d:{{ dur }}s">{% for r in range(6) %}{% for a in announcements %}<span class="aitem">{{ a }}</span>{% endfor %}{% endfor %}</div></div></div>
+{% endif %}
+
+<div class="hero" id="home"><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe066"/><stop offset="1" stop-color="#ff8a1f"/></linearGradient>
+<linearGradient id="gp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffa07a"/><stop offset="1" stop-color="#ff6b4a"/></linearGradient>
+<linearGradient id="gt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#99f6e4"/><stop offset="1" stop-color="#14b8a6"/></linearGradient></defs></svg><i class="au a1"></i><i class="au a2"></i><i class="au a3"></i><div class="sky" aria-hidden="true"><i class="rays"></i><i class="orb"></i>{% for i in range(16) %}<span class="bb" style="--l:{{ (i*37+11)%96 }}%;--s:{{ 12+(i*13)%36 }}px;--d:{{ 14+(i*5)%13 }}s;--w:-{{ (i*3)%14 }}s"></span>{% endfor %}{% for i in range(22) %}<span class="tw" style="--x:{{ (i*53+7)%98 }}%;--y:{{ (i*29+5)%78 }}%;--z:{{ 2+(i%3) }}px;--w:-{{ (i*7)%9 }}s"></span>{% endfor %}</div><div class="fx" aria-hidden="true">
+<svg class="f1" style="--k:.6" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#gs)" d="m12 1.5 3 6.6 7.2.8-5.4 4.8 1.6 7.1L12 17.1 5.6 20.8l1.6-7.1L1.8 8.900l7.200-.8z"/></svg>
+<svg class="f2" style="--k:-.8" width="64" height="64" viewBox="0 0 64 64"><path d="M4 22 32 8l28 14-28 14z" fill="url(#gp)"/><path d="M14 30v14c0 6 36 6 36 0V30L32 39z" fill="#0f766e" opacity=".9"/><path d="M58 24v18" stroke="#ffd34d" stroke-width="3" stroke-linecap="round"/></svg>
+<svg class="f3" style="--k:1" width="62" height="62" viewBox="0 0 64 64"><path d="M6 14c10-4 20-2 26 4v36c-6-6-16-8-26-4z" fill="url(#gt)"/><path d="M58 14c-10-4-20-2-26 4v36c6-6 16-8 26-4z" fill="#5eead4"/></svg>
+<svg class="f4" style="--k:-.5" width="30" height="76" viewBox="0 0 30 76"><rect x="6" y="6" width="18" height="52" rx="3" fill="url(#gs)"/><rect x="6" y="6" width="18" height="10" rx="3" fill="#ff6b4a"/><path d="M6 58h18l-9 16z" fill="#fde7c3"/><path d="M12 68h6l-3 6z" fill="#334155"/></svg>
+<svg class="f5" style="--k:.9" width="40" height="40" viewBox="0 0 24 24"><path fill="url(#gp)" d="M12 0c1 7 5 11 12 12-7 1-11 5-12 12-1-7-5-11-12-12C7 11 11 7 12 0z"/></svg>
+<svg class="f6" style="--k:-1" width="46" height="46" viewBox="0 0 24 24"><path fill="url(#gt)" d="m12 1.5 3 6.6 7.2.8-5.4 4.8 1.6 7.1L12 17.1 5.6 20.8l1.6-7.1L1.8 8.900l7.200-.8z"/></svg>
+<b class="f7" style="--k:.7">A</b><b class="f8" style="--k:-.6">B</b><b class="f9" style="--k:.4">1</b>
+</div>
+<div class="hgrid">
+<div class="hc">
+  <span class="badge"><i></i><span data-te="ప్రవేశాలు కొనసాగుతున్నాయి">Admissions are in progress</span></span>
+  <h1>{{ SCHOOL }}</h1>
+  <span class="hlogo">{{ logo() }}</span>
+  {% if SITE.quote %}<p class="quote"><span class="te" lang="te">{{ SITE.quote }}</span>{% if SITE.quote_en %}<small>{{ SITE.quote_en }}</small>{% endif %}</p>{% endif %}
+  <div class="tmot te" lang="te">{% for te, en in SITE.telugu_motto %}<span><b>{{ te }}</b><small>{{ en }}</small></span>{% if not loop.last %}<i>✦</i>{% endif %}{% endfor %}</div>
+  <div class="hacts"><a href="#admissions" class="btn" data-te="ప్రవేశం కోసం దరఖాస్తు">Apply for admission</a><a href="#activities" class="btn ghost" data-te="కార్యకలాపాలు చూడండి">Explore activities</a></div>
+</div>
+<div class="frame"><div class="fi"><img src="{{ imgurl(SITE.images.hero) }}" alt="{{ SCHOOL }} campus building" fetchpriority="high"><i class="shine"></i></div>
+  <div class="cap"><b>{{ SITE.recognised }}</b><span>{{ SITE.range_en }}</span></div></div>
+</div>
+<div class="chips">{% for a, b in SITE.highlights %}<div class="chip"><b>{{ a }}</b><span>{{ b }}</span></div>{% endfor %}</div>
+<svg class="wv" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50c180 50 360 50 540 20s360-60 540-30 270 40 360 30v50H0z" fill="var(--bg)" opacity=".5"/><path d="M0 70c200 30 380 30 560 0s380-40 560-10 220 30 320 20v10H0z" fill="var(--bg)"/></svg>
+</div>
+
+<div class="ticker" aria-label="Highlights"><div class="tk">{% for r in range(2) %}<span class="ti2"><b>{{ SITE.recognised }}</b></span><span class="ti2"><b>{{ SITE.range_en }}</b> <small class="te" lang="te">{{ SITE.range_te }}</small></span>{% for en, te in SITE.badges %}<span class="ti2"><b>{{ en }}</b>{% if te %} <small class="te" lang="te">{{ te }}</small>{% endif %}</span>{% endfor %}{% endfor %}</div></div>
+
+{% if slides %}<section id="moments" class="mom"><div class="w">
+  <span class="eye">Latest from our school</span><h2>School Moments</h2><p class="s">Activities, achievements, projects and more from our school family.</p>
+  <div class="sl" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Latest school photos">
+    <div class="sl-view">
+      {% for s in slides %}<figure class="sl-s{{ ' on' if loop.first }}" style="--bg:url('{{ url_for('static', filename=s.src) }}')" aria-hidden="{{ 'false' if loop.first else 'true' }}">
+        <img src="{{ url_for('static', filename=s.src) }}" alt="{{ s.title or s.cat }}"{% if not loop.first %} loading="lazy"{% endif %}>
+        <figcaption><span class="sl-tag">{{ s.cat }}</span>{% if s.title %}<b>{{ s.title }}</b>{% endif %}{% if s.date %}<small>{{ s.date }}</small>{% endif %}</figcaption>
+      </figure>{% endfor %}
+      <button type="button" class="sl-b prev" aria-label="Previous photo">&#8249;</button>
+      <button type="button" class="sl-b next" aria-label="Next photo">&#8250;</button>
+      <span class="sl-cnt"><b class="sl-cur">1</b> / {{ slides|length }}</span>
+    </div>
+    <div class="sl-th" role="tablist">{% for s in slides %}<button type="button" class="{{ 'on' if loop.first }}" aria-label="Photo {{ loop.index }}"><img src="{{ url_for('static', filename=s.src) }}" alt="" loading="lazy"></button>{% endfor %}</div>
+    <div class="sl-dots">{% for s in slides %}<button type="button" class="{{ 'on' if loop.first }}" aria-label="Go to photo {{ loop.index }}"></button>{% endfor %}</div>
+  </div>
+</div></section>
+<script>
+(function(){var r=document.querySelector('.sl');if(!r)return;
+var s=r.querySelectorAll('.sl-s'),th=r.querySelectorAll('.sl-th button'),dt=r.querySelectorAll('.sl-dots button'),cur=r.querySelector('.sl-cur'),n=s.length,i=0,t=null,hold=false;
+function go(k){i=(k+n)%n;for(var j=0;j<n;j++){var on=j===i;s[j].classList.toggle('on',on);s[j].setAttribute('aria-hidden',on?'false':'true');th[j].classList.toggle('on',on);dt[j].classList.toggle('on',on)}
+cur.textContent=i+1;var a=th[i];if(a&&a.parentNode.scrollWidth>a.parentNode.clientWidth){a.parentNode.scrollTo({left:a.offsetLeft-a.parentNode.clientWidth/2+a.clientWidth/2,behavior:'smooth'})}}
+function play(){stop();if(n>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)t=setInterval(function(){if(!hold&&!document.hidden)go(i+1)},5000)}
+function stop(){if(t){clearInterval(t);t=null}}
+r.querySelector('.prev').onclick=function(){go(i-1);play()};r.querySelector('.next').onclick=function(){go(i+1);play()};
+th.forEach(function(b,k){b.onclick=function(){go(k);play()}});dt.forEach(function(b,k){b.onclick=function(){go(k);play()}});
+r.addEventListener('mouseenter',function(){hold=true});r.addEventListener('mouseleave',function(){hold=false});
+r.addEventListener('focusin',function(){hold=true});r.addEventListener('focusout',function(){hold=false});
+r.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){go(i-1);play()}else if(e.key==='ArrowRight'){go(i+1);play()}});
+var x0=null;r.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;hold=true},{passive:true});
+r.addEventListener('touchend',function(e){if(x0!==null){var d=e.changedTouches[0].clientX-x0;if(Math.abs(d)>40){go(d<0?i+1:i-1)}x0=null}hold=false;play()});
+play()})();
+</script>{% endif %}
+
+<section class="alt" id="about"><div class="w">
+  <span class="eye">Who we are</span><h2 data-te="పాఠశాల గురించి">About School</h2><p class="s">“{{ SITE.motto }}”</p>
+  <div class="ab"><div>{% for p in SITE.about %}<p>{{ p }}</p>{% endfor %}{% if SITE.about_te %}<div class="tecard te" lang="te">{% for p in SITE.about_te %}<p>{{ p }}</p>{% endfor %}</div>{% endif %}</div>
+    <div class="hl">{% for a, b in SITE.highlights %}<div><b>{{ a }}</b><span>{{ b }}</span></div>{% endfor %}</div></div>
+  {% if SITE.collage %}<div class="collage">{% for im in SITE.collage %}<img src="{{ imgurl(im) }}" alt="Happy children at our school" style="--i:{{ loop.index0 }}" loading="lazy">{% endfor %}</div>{% endif %}
+  <div class="g">
+    <div class="c"><div class="i">🔭</div><h3>Our Vision</h3><ul>{% for x in SITE.vision %}<li>{{ x }}</li>{% endfor %}</ul></div>
+    <div class="c"><div class="i">🎯</div><h3>Our Mission</h3><ul>{% for x in SITE.mission %}<li>{{ x }}</li>{% endfor %}</ul></div>
+  </div>
+
+  {% if SITE.about_people %}
+  <span class="eye" style="margin-top:56px">Our school family</span><h2 style="font-size:clamp(24px,3.4vw,32px)">Leadership &amp; Team Messages</h2><p class="s">What our management, principal, head master and teachers say about our school.</p>
+  <div class="ppl">{% for b in SITE.about_people %}<div class="c pc">
+    <div class="ph2"><div class="pa">{% if b.photo %}<img src="{{ url_for('static', filename='uploads/' ~ b.photo) }}" alt="{{ b.name }}" loading="lazy">{% else %}{{ b.icon }}{% endif %}</div>
+      <div><span class="role">{{ b.role }}</span><h3>{{ b.name }}</h3></div></div>
+    <p class="msgtxt">{{ b.message }}</p></div>{% endfor %}</div>
+  {% endif %}
+</div></section>
+
+<section id="specialities"><div class="w">
+  <span class="eye">Why parents choose us</span><h2 class="te" lang="te">మా ప్రత్యేకతలు</h2><p class="s">Our Specialities</p>
+  <div class="spg">{% for te, en in SITE.specialities %}<div class="c sp"><span class="no">{{ loop.index }}</span><div><p class="te" lang="te">{{ te }}</p>{% if en %}<small>{{ en }}</small>{% endif %}</div></div>{% endfor %}</div>
+  {% if SITE.success_te %}<div class="vic"><p class="te" lang="te">{{ SITE.success_te }}</p>{% if SITE.success_en %}<small>{{ SITE.success_en }}</small>{% endif %}</div>{% endif %}
+</div></section>
+
+<section class="alt" id="activities"><div class="w">
+  <span class="eye">Beyond the classroom</span><h2 data-te="పాఠశాల కార్యకలాపాలు">School Activities</h2><p class="s">Learning goes far beyond the classroom. Pick a tab to explore.</p>
+  {% set pal = ['#0b4ea2','#7b2d8e','#d9500f','#e31e24','#1a8a3a','#d6247d'] %}
+  <div class="act">
+    <div class="tabs" role="tablist">{% for ic, t, d, pts in SITE.activities %}<button class="tab {{ 'on' if loop.first }}" role="tab" data-p="p{{ loop.index }}" style="--a:{{ pal[loop.index0 % 6] }}"><span class="ti">{{ ic }}</span><span>{{ t }}</span></button>{% endfor %}</div>
+    <div class="panels">{% for ic, t, d, pts in SITE.activities %}
+      <div class="panel {{ 'on' if loop.first }}" id="p{{ loop.index }}" style="--a:{{ pal[loop.index0 % 6] }}"><div class="ph"><div class="big">{{ ic }}</div><div><h3>{{ t }}</h3><p>{{ d }}</p></div></div><ul class="pts">{% for x in pts %}<li>{{ x }}</li>{% endfor %}</ul></div>{% endfor %}</div>
+  </div>
+</div></section>
+
+{% if teachers %}
+<section id="teachers"><div class="w">
+  <span class="eye">Meet our team</span><h2 data-te="మా ఉపాధ్యాయులు">Our Teachers</h2><p class="s">Choose a class to see the teachers who guide it.</p>
+  <div class="chipbar"><button class="cc on" data-c="">All classes</button>{% for c in classes %}<button class="cc" data-c="{{ c }}">{{ c }}</button>{% endfor %}</div>
+  <div class="g">{% for t in teachers %}<div class="c tc" data-cl="{{ t.classes|join('|') }}">
+    <div class="av">{% if t.photo %}<img src="{{ url_for('static', filename='uploads/' ~ t.photo) }}" alt="{{ t.name }}">{% else %}{{ t.name[:1] }}{% endif %}</div>
+    <h3>{{ t.name }}</h3><div class="sj">{{ t.subject }}</div>{% if t.qual %}<p>{{ t.qual }}</p>{% endif %}
+    {% if t.classes %}<div class="cl">{% for c in t.classes %}<span>{{ c }}</span>{% endfor %}</div>{% endif %}</div>{% endfor %}</div>
+  <p class="s" id="tnone" hidden style="margin:26px auto 0">No teachers are listed for this class yet.</p>
+</div></section>
+{% endif %}
+{% set R = SITE.results %}{% if R and R.total %}{% set pct = ((R.passed / R.total) * 100)|round|int %}
+<section class="res" id="results"><div class="w">
+  <span class="eye lite">Our results</span><h2 class="wh" data-te="SSC ఫలితాలు">SSC Results</h2><p class="s wh2">{{ R.caption }}</p>
+  <div class="resg">
+    <div class="rl">
+      <svg class="ring" viewBox="0 0 120 120" aria-label="{{ pct }} percent passed"><defs><linearGradient id="rgd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe600"/><stop offset="1" stop-color="#f26522"/></linearGradient></defs>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#ffffff26" stroke-width="10"/><circle class="rg" data-pct="{{ pct }}" cx="60" cy="60" r="52" fill="none" stroke="url(#rgd)" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+        <text x="60" y="62" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">{{ pct }}%</text><text x="60" y="80" text-anchor="middle" font-size="9" letter-spacing="1" fill="#cbd5e1">PASSED</text></svg>
+      <div class="rs">
+        <div><b class="num" data-to="{{ R.total }}">0</b><span>Total students</span></div>
+        <div><b class="num" data-to="{{ R.passed }}">0</b><span>Passed students</span></div>
+        <div><b class="num" data-to="{{ R.a500 }}">0</b><span>500 marks above</span></div>
+        <div><b class="num" data-to="{{ R.a400 }}">0</b><span>400 marks above</span></div>
+        <div><b class="num" data-to="{{ R.b400 }}">0</b><span>400 marks below</span></div>
+      </div>
+    </div>
+    {% if SITE.results_banner_on %}<figure class="cp resimg"><img class="zoom" src="{{ imgurl(SITE.images.results) }}" alt="SSC results banner" loading="lazy"><figcaption>Tap to enlarge</figcaption></figure>{% endif %}
+  </div>
+{% if SITE.results_history %}<div class="rh"><h3>Previous years</h3><div class="rhw"><table><thead><tr><th>Year</th><th>Students</th><th>Passed</th><th>500+</th><th>400+</th><th>Below 400</th></tr></thead><tbody>{% for y, t1, p1, a1, b1, c1 in SITE.results_history %}<tr><td>{{ y }}</td><td>{{ t1 }}</td><td>{{ p1 }}</td><td>{{ a1 }}</td><td>{{ b1 }}</td><td>{{ c1 }}</td></tr>{% endfor %}</tbody></table></div></div>{% endif %}</div></section>
+{% endif %}
+<section id="admissions"><div class="w">
+  <span class="eye">Join our family</span><h2 data-te="ప్రవేశ వివరాలు">Admission Details</h2><p class="s">Admissions are in progress for {{ SITE.range_en }}. Follow these simple steps.</p>
+  <div class="g">{% for t, d in SITE.admission_steps %}<div class="c step"><div class="n">{{ loop.index }}</div><h3>{{ t }}</h3><p>{{ d }}</p></div>{% endfor %}</div>
+  <div class="ad">
+    <div class="c"><h3>📄 Documents required</h3><ul>{% for x in SITE.documents %}<li>{{ x }}</li>{% endfor %}</ul></div>
+    <div class="c"><h3>🎓 Class-wise programmes</h3><table>{% for a, b in SITE.age_rules %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endfor %}</table></div>
+    <div class="c"><h3>✉️ Admission enquiry</h3>
+      {% for m in get_flashed_messages() %}<div class="msg">{{ m }}</div>{% endfor %}
+      <form method="post" action="{{ url_for('enquiry') }}">
+        <input name="name" placeholder="Child's name" required>
+        <select name="cls">{% for c in classes %}<option value="{{ c }}">Class {{ c }}</option>{% endfor %}</select>
+        <input name="parent" placeholder="Parent / guardian name" required>
+        <input name="phone" type="tel" placeholder="Phone number" required>
+        <input name="website" style="display:none" tabindex="-1" autocomplete="off">
+        <button class="btn" style="width:100%" data-te="విచారణ పంపండి">Send enquiry</button></form>
+      <p class="callp">📞 Or call us: {% for n in SITE.phone.split(',') %}<a href="tel:{{ n.strip()|replace(' ', '') }}">{{ n.strip() }}</a>{% endfor %}</p></div>
+  </div>
+</div></section>
+
+<section class="alt" id="facilities"><div class="w">
+  <span class="eye">Our campus</span><h2 data-te="ప్రాంగణం &amp; సౌకర్యాలు">Campus &amp; Facilities</h2>
+  <p class="s"><span class="te" lang="te">{{ SITE.campus_te }}</span>{% if SITE.campus_en %}<br>{{ SITE.campus_en }}{% endif %}</p>
+  <div class="campus">
+    <figure class="cp wide"><img class="zoom" src="{{ imgurl(SITE.images.campus1) }}" alt="{{ SITE.campus1_cap }}" loading="lazy"><figcaption>{{ SITE.campus1_cap }}</figcaption></figure>
+    <figure class="cp"><img class="zoom" src="{{ imgurl(SITE.images.campus2) }}" alt="{{ SITE.campus2_cap }}" loading="lazy"><figcaption>{{ SITE.campus2_cap }}</figcaption></figure>
+    <div class="c bus"><img class="busimg" src="{{ imgurl(SITE.images.bus) }}" alt="R.K. Little Buds school bus" loading="lazy"><div><span class="role">Transport</span><h3 class="te" lang="te">{{ SITE.bus_te }}</h3><p>{{ SITE.bus_en }}</p>{% if SITE.bus_text %}<p>{{ SITE.bus_text }}</p>{% endif %}{% if SITE.bus_routes %}<table class="brt"><tr><th>Route</th><th>Timing</th><th>Stops</th></tr>{% for a1, b1, c1 in SITE.bus_routes %}<tr><td>{{ a1 }}</td><td>{{ b1 }}</td><td>{{ c1 }}</td></tr>{% endfor %}</table>{% endif %}</div></div>
+  </div>
+  <div class="g" style="margin-top:22px">{% for ic, t, d in SITE.facilities %}<div class="c"><div class="i">{{ ic }}</div><h3>{{ t }}</h3><p>{{ d }}</p></div>{% endfor %}</div>
+</div></section>
+
+<section id="gallery"><div class="w">
+  <span class="eye">Memories</span><h2 data-te="గ్యాలరీ">Gallery</h2><p class="s">{% if SITE.events %}Click an event to see its details and photos.{% else %}Moments from our school.{% endif %}</p>
+  {% set pal = ['#0b4ea2','#7b2d8e','#d9500f','#e31e24','#1a8a3a','#d6247d'] %}
+  {% if SITE.events %}<div class="evs">{% for e in SITE.events %}<button class="ev" data-i="{{ loop.index0 }}" style="--a:{{ pal[loop.index0 % 6] }}">
+    <span class="evc">{% if e.cover %}<img src="{{ url_for('static', filename='uploads/' ~ e.cover) }}" alt="" loading="lazy">{% else %}<i>{{ e.icon }}</i>{% endif %}</span>
+    <span class="evb"><b>{{ e.title }}</b><small>{% if e.date %}{{ e.date }} · {% endif %}{{ e.photos|length }} photo{{ '' if e.photos|length == 1 else 's' }}{% if e.videos %} · 🎬 {{ e.videos|length }} video{{ '' if e.videos|length == 1 else 's' }}{% endif %}</small></span></button>{% endfor %}</div>
+  {% else %}<div class="gal">{% if SITE.photos %}{% for ph in SITE.photos %}<div class="pt"><img src="{{ url_for('static', filename='uploads/' ~ ph) }}" alt="School photo" loading="lazy"></div>{% endfor %}
+  {% else %}{% for label, c1, c2 in SITE.gallery %}<div style="background:linear-gradient(135deg,{{ c1 }},{{ c2 }})">{{ label }}</div>{% endfor %}{% endif %}</div>{% endif %}
+</div></section>
+
+{% if upcoming %}{% set mn = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'] %}
+<section class="alt" id="events"><div class="w"><span class="eye">Mark your calendar</span><h2>Upcoming Events</h2><p class="s">Dates to remember.</p>
+  <div class="evl">{% for d1, t1, x1 in upcoming %}<div class="c evr"><div class="dtb"><b>{{ d1[8:10] }}</b><span>{{ mn[d1[5:7]|int] if d1[5:7]|int in range(1, 13) else '' }}</span></div><div><h3>{{ t1 }}</h3>{% if x1 %}<p>{{ x1 }}</p>{% endif %}</div></div>{% endfor %}</div></div></section>{% endif %}
+{% if SITE.testimonials %}<section id="testimonials"><div class="w"><span class="eye">Parents' words</span><h2>What Parents Say</h2><p class="s">Kind words from our school family.</p>
+  <div class="g">{% for who, msg in SITE.testimonials %}<div class="c tst"><p>“{{ msg }}”</p><b>— {{ who }}</b></div>{% endfor %}</div></div></section>{% endif %}
+<section class="alt" id="contact"><div class="w">
+  <span class="eye">Get in touch</span><h2 data-te="సంప్రదించండి">Contact Us</h2><p class="s">Visit us, call us or send an enquiry. We'd love to meet you.</p>
+  {% if SITE.campuses %}<div class="cg">{% for name, en, te, ph in SITE.campuses %}<div class="c cmp"><h3>📍 {{ name }}</h3><p>{{ en }}</p><p class="te" lang="te">{{ te }}</p>
+    <p class="phs"><b>📞</b> {% for n in ph.split(',') %}<a href="tel:{{ n.strip()|replace(' ', '') }}">{{ n.strip() }}</a>{% endfor %}</p></div>{% endfor %}</div>
+  {% else %}<div class="c" style="max-width:560px;margin:auto"><div class="row"><span>📍</span><div><b>Address</b><span>{{ SITE.address }}</span></div></div><div class="row"><span>📞</span><div><b>Phone</b><span>{{ SITE.phone }}</span></div></div></div>{% endif %}
+  {% if SITE.map_link %}<p style="text-align:center;margin:18px 0 0"><a class="btn" href="{{ SITE.map_link }}" target="_blank" rel="noopener">📍 Open in Google Maps</a></p>{% endif %}
+  {% if SITE.email or SITE.hours %}<div class="c" style="max-width:560px;margin:18px auto 0">
+    {% if SITE.email %}<div class="row"><span>✉️</span><div><b>Email</b><span>{{ SITE.email }}</span></div></div>{% endif %}
+    {% if SITE.hours %}<div class="row"><span>🕘</span><div><b>Office hours</b><span>{{ SITE.hours }}</span></div></div>{% endif %}</div>{% endif %}
+</div></section>
+
+
+<footer>{{ SITE.address }} · {{ SITE.phone }}<br>© {{ today[:4] }} {{ SCHOOL }}. All rights reserved. · <a href="{{ url_for('parent_login') }}" target="_blank" rel="noopener">Parent Login</a> · <a href="{{ url_for('login') }}" target="_blank" rel="noopener">Staff Login</a></footer>
+<div class="ov" id="ov"><div class="md"><button class="x" id="mx" aria-label="Close">✕</button><div class="hd"><h3 id="mt"></h3><div class="dt" id="mdt"></div><p id="mdx"></p></div><div class="mv" id="mv"></div><div class="mp" id="mp"></div><p id="mnp" hidden style="text-align:center;color:var(--mut);padding:0 0 28px">Photos will be added soon.</p></div></div>
+<div class="lbx" id="lbx"><button id="lc" aria-label="Close">✕</button><button id="lp" aria-label="Previous">‹</button><img id="lbi" alt=""><button id="ln" aria-label="Next">›</button></div>
+<a href="#home" class="top" id="top" aria-label="Back to top">↑</a>
+<script>
+document.getElementById('mb').onclick=()=>document.getElementById('nav').classList.toggle('o');
+document.getElementById('nav').onclick=e=>{if(e.target.tagName==='A')document.getElementById('nav').classList.remove('o')};
+const tabs=[...document.querySelectorAll('.tab')],act=document.querySelector('.act');let ti=0,hov=false,last=0,vis=false;
+function show(i){tabs.forEach(t=>t.classList.remove('on'));document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));const b=tabs[i],box=b.parentElement;b.classList.add('on');document.getElementById(b.dataset.p).classList.add('on');ti=i;box.scrollTo({top:b.offsetTop-box.clientHeight/2+b.offsetHeight/2,left:b.offsetLeft-box.clientWidth/2+b.offsetWidth/2,behavior:'smooth'})}
+if(tabs.length){tabs.forEach((b,i)=>b.onclick=()=>{show(i);last=Date.now()});
+act.onmouseenter=()=>hov=true;act.onmouseleave=()=>hov=false;
+new IntersectionObserver(es=>vis=es[0].isIntersecting).observe(act);
+setInterval(()=>{if(vis&&!hov&&Date.now()-last>12000)show((ti+1)%tabs.length)},5000)}
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const t=e.target;t.classList.add('in');io.unobserve(t);if(t.matches('.c,.hl div,.gal div,.cp,.rs>div,.collage img,.vic'))setTimeout(()=>{t.classList.remove('rv','in');t.style.transitionDelay=''},1300)}}),{threshold:.12});
+document.querySelectorAll('.c,.hl div,.gal div,.eye,h2,.ab>div,.cp,.rs>div,.collage img,.vic').forEach(e=>{e.classList.add('rv');e.style.transitionDelay=(Array.prototype.indexOf.call(e.parentElement.children,e)%6*90)+'ms';io.observe(e)});
+const EV={{ SITE.events|tojson }},UP="{{ url_for('static', filename='uploads/') }}";
+const ov=document.getElementById('ov'),lbx=document.getElementById('lbx'),lbi=document.getElementById('lbi');let cur=[],ci=0;
+function openLb(i){ci=(i+cur.length)%cur.length;lbi.src=cur[ci];lbx.classList.add('on')}
+document.querySelectorAll('.ev').forEach(b=>b.onclick=()=>{const e=EV[b.dataset.i];cur=e.photos.map(p=>UP+p);
+ document.getElementById('mt').textContent=e.icon+' '+e.title;document.getElementById('mdt').textContent=e.date||'';document.getElementById('mdx').textContent=e.details||'';
+ const mv=document.getElementById('mv');mv.replaceChildren();const vids=e.videos||[];vids.forEach(p=>{const v=document.createElement('video');v.src=UP+p;v.controls=true;v.preload='metadata';v.playsInline=true;mv.appendChild(v)});
+ const mp=document.getElementById('mp');mp.replaceChildren();cur.forEach((u,i)=>{const im=new Image();im.src=u;im.alt=e.title;im.loading='lazy';im.onclick=()=>openLb(i);mp.appendChild(im)});
+ document.getElementById('mnp').hidden=(cur.length+vids.length)>0;ov.classList.add('on');document.body.style.overflow='hidden'});
+function closeOv(){ov.classList.remove('on');document.body.style.overflow='';document.getElementById('mv').replaceChildren()}
+document.getElementById('mx').onclick=closeOv;ov.onclick=e=>{if(e.target===ov)closeOv()};
+document.getElementById('lc').onclick=()=>lbx.classList.remove('on');lbx.onclick=e=>{if(e.target===lbx)lbx.classList.remove('on')};
+document.getElementById('lp').onclick=()=>openLb(ci-1);document.getElementById('ln').onclick=()=>openLb(ci+1);
+addEventListener('keydown',e=>{if(e.key==='Escape'){if(lbx.classList.contains('on'))lbx.classList.remove('on');else closeOv()}else if(lbx.classList.contains('on')){if(e.key==='ArrowLeft')openLb(ci-1);if(e.key==='ArrowRight')openLb(ci+1)}});
+document.querySelectorAll('.cc').forEach(b=>b.onclick=()=>{document.querySelectorAll('.cc').forEach(x=>x.classList.remove('on'));b.classList.add('on');const c=b.dataset.c;let n=0;
+ document.querySelectorAll('.tc').forEach(t=>{const ok=!c||t.dataset.cl.split('|').includes(c);t.classList.toggle('hide',!ok);if(ok){n++;t.style.animation='none';void t.offsetWidth;t.style.animation='up .45s both'}});
+ const none=document.getElementById('tnone');if(none)none.hidden=n>0});
+const nl=[...document.querySelectorAll('nav a.ni')],nm={};nl.forEach(a=>nm[a.getAttribute('href').slice(1)]=a);
+const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){nl.forEach(l=>l.classList.remove('on'));if(nm[e.target.id])nm[e.target.id].classList.add('on')}}),{rootMargin:'-35% 0px -60% 0px'});
+Object.keys(nm).forEach(id=>{const el=document.getElementById(id);if(el)spy.observe(el)});
+document.querySelectorAll('.zoom').forEach(im=>im.onclick=()=>{cur=[im.currentSrc||im.src];openLb(0)});
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;cio.unobserve(e.target);const el=e.target;
+ if(el.dataset.to!==undefined){const to=+el.dataset.to,t0=performance.now();(function f(t){const p=Math.min(1,(t-t0)/1400);el.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)}
+ else if(el.dataset.pct!==undefined){el.style.strokeDashoffset=326.7*(1-el.dataset.pct/100)}}),{threshold:.4});
+document.querySelectorAll('.num,.rg').forEach(e=>cio.observe(e));
+const pg=document.getElementById('pg'),topb=document.getElementById('top'),hd=document.querySelector('header'),de=document.documentElement;
+addEventListener('scroll',()=>{const p=de.scrollTop/Math.max(1,de.scrollHeight-de.clientHeight);pg.style.transform='scaleX('+p+')';topb.classList.toggle('show',de.scrollTop>600);hd.classList.toggle('sm',de.scrollTop>40)},{passive:true});
+const hero=document.querySelector('.hero');hero.addEventListener('mousemove',e=>{hero.style.setProperty('--mx',((e.clientX/innerWidth-.5)*40)+'px');hero.style.setProperty('--my',((e.clientY/innerHeight-.5)*40)+'px')});
+document.querySelectorAll('.g .c').forEach(c=>{c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--ry',(((e.clientX-r.left)/r.width-.5)*8)+'deg');c.style.setProperty('--rx',(-((e.clientY-r.top)/r.height-.5)*8)+'deg')});c.addEventListener('mouseleave',()=>{c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')})});
+
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+const tl=[...document.querySelectorAll('[data-te]')].filter(e=>e.dataset.te);tl.forEach(e=>e.dataset.en=e.textContent);
+function setLang(te){document.documentElement.classList.toggle('lang-te',te);tl.forEach(e=>{e.textContent=te?e.dataset.te:e.dataset.en});try{localStorage.setItem('rklang',te?'te':'en')}catch(_){}}
+document.getElementById('lang').onclick=()=>setLang(!document.documentElement.classList.contains('lang-te'));
+try{if(localStorage.getItem('rklang')==='te')setLang(true)}catch(_){}
+</script>
+</body></html>

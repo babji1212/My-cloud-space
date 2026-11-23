@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% from "_assign_grid.html" import grid %}
+{% block body %}
+<h1>🏫 Class Teachers (portal)</h1>
+<p class="sub">Each class teacher gets their own username and password for the <b>Class Teacher Portal</b> at <code>{{ url_for('teacher_login', _external=True) }}</code>. This address is not shown anywhere on the public website, so share it only with your teachers. A teacher sees only the classes and sections you tick below.</p>
+<div class="card"><h3>➕ Create a class teacher</h3>
+<form method="post"><div class="fg">
+  <div><label>Teacher name</label><input name="name" required></div>
+  <div><label>Username (letters/digits, no spaces)</label><input name="username" required pattern="[A-Za-z0-9._\-]{3,30}" placeholder="e.g. revathi"></div>
+  <div><label>Mobile number (optional)</label><input name="phone"></div>
+  <div><label>Password (leave empty to generate one)</label><input name="password" placeholder="Auto-generated if empty"></div>
+  <div class="full"><label>Classes and sections this teacher looks after</label>{{ grid(classes, sections, chosen) }}</div></div>
+<p style="margin:12px 0 0"><button class="btn">Create class teacher</button></p></form></div>
+<h3 style="margin:22px 0 10px">Class teachers ({{ rows|length }})</h3>
+<div class="card wrap">{% if rows %}<table><thead><tr><th>Teacher</th><th>Username</th><th>Classes &amp; sections</th><th>Students</th><th>Status</th><th>Last login</th><th></th></tr></thead><tbody>
+{% for t in rows %}<tr><td><b>{{ t.name }}</b><br><small>{{ t.phone }}</small></td><td>{{ t.username }}</td><td style="white-space:normal;min-width:180px">{% for a in t.assign %}<span class="pill" style="margin:2px;display:inline-block">{{ a }}</span>{% else %}<span class="sub">none yet</span>{% endfor %}</td><td>{{ t.n }}</td>
+<td>{% if t.active %}<span class="pill ok">Active</span>{% else %}<span class="pill b">Switched off</span>{% endif %}{% if t.must_change %}<br><small>password not changed yet</small>{% endif %}</td><td>{{ t.last_login or '—' }}</td>
+<td><a class="btn g" style="padding:6px 12px" href="{{ url_for('class_teacher_edit', tid=t.id) }}">Edit</a></td></tr>{% endfor %}</tbody></table>
+{% else %}<div class="empty">No class teachers yet. Create the first one above.</div>{% endif %}</div>
+{% endblock %}

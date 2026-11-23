@@ -1,0 +1,36 @@
+{# Child progress report: exams & marks, competitive exams, activities, attendance, teacher remarks. staff=True shows add/edit links #}
+{% macro tools(m, r, staff) %}{% if staff and r.id %}<span class="rp-rt"><a href="{{ url_for('form', m=m, rid=r.id, next='profile') }}" title="Edit">✏️</a>{% if is_principal %}<form method="post" action="{{ url_for('delete', m=m, rid=r.id) }}" onsubmit="return confirm('Delete this record?')"><button title="Delete">🗑️</button></form>{% endif %}</span>{% endif %}{% endmacro %}
+{% macro imgs(list, staff) %}{% if list %}<div class="rp-imgs">{% for im in list %}<span class="rp-im"><a href="{{ url_for('static', filename='uploads/' ~ im.image) }}" target="_blank" title="{{ im.caption or im.exam }}"><img src="{{ url_for('static', filename='uploads/' ~ im.image) }}" alt="{{ im.caption }}" loading="lazy"></a>{% if staff %}<form method="post" action="{{ url_for('exam_image_delete', rid=im.id) }}" onsubmit="return confirm('Delete this image?')"><button title="Delete">✕</button></form>{% endif %}</span>{% endfor %}</div>{% endif %}{% endmacro %}
+{% macro add(m, sid, staff, label='➕ Add') %}{% if staff %}<a class="rp-add" href="{{ url_for('form', m=m, sid=sid, next='profile') }}">{{ label }}</a>{% endif %}{% endmacro %}
+{% macro chart(R) %}{% set pts = R.trend %}{% if pts|length >= 2 %}{% set n = pts|length %}{% set step = 300 / (n - 1) %}
+<svg class="rp-chart" viewBox="0 0 360 140" role="img" aria-label="Exam percentage trend">
+{% for v in [0, 50, 100] %}<line x1="30" x2="345" y1="{{ 110 - v * 0.9 }}" y2="{{ 110 - v * 0.9 }}" stroke="#d5dcec" stroke-dasharray="3 3"/><text x="3" y="{{ 113 - v * 0.9 }}" font-size="9" fill="#777">{{ v }}%</text>{% endfor %}
+{% set ns = namespace(p='') %}{% for l, v in pts %}{% set ns.p = ns.p ~ (35 + loop.index0 * step)|round(1) ~ ',' ~ (110 - v * 0.9)|round(1) ~ ' ' %}{% endfor %}
+<polyline points="{{ ns.p }}" fill="none" stroke="#7b2d8e" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+{% for l, v in pts %}{% set x = 35 + loop.index0 * step %}<circle cx="{{ x|round(1) }}" cy="{{ (110 - v * 0.9)|round(1) }}" r="4.5" fill="#f26522" stroke="#fff" stroke-width="2"/><text x="{{ x|round(1) }}" y="{{ (110 - v * 0.9 - 9)|round(1) }}" font-size="10" font-weight="700" text-anchor="middle" fill="#14213d">{{ v }}%</text><text x="{{ x|round(1) }}" y="128" font-size="8.5" text-anchor="middle" fill="#666">{{ l[:11] }}</text>{% endfor %}
+</svg>{% endif %}{% endmacro %}
+{% macro report(R, staff=False, sid=0) %}
+<div class="rp-sec">
+  <h4>📑 Exams &amp; marks{% if R.avg is not none %} <span class="pill k">Average {{ R.avg }}%</span>{% endif %}<a class="rp-add" href="{{ url_for('report_card' if staff else 'parent_report', sid=sid) }}" target="_blank">🖨️ Report card</a>{% if staff %}<a class="rp-add" style="margin-left:0" href="{{ url_for('marks_entry', sid=sid) }}">➕ Add marks (all subjects)</a>{% endif %}</h4>
+  {{ chart(R) }}{% if R.exams %}<div class="rp-xgrid">{% for g in R.exams %}
+    <div class="rp-xg"><div class="rp-xh"><b>{{ g.name }}</b>{% if g.date %}<small>{{ g.date }}</small>{% endif %}{% if g.pct is not none %}<span class="pill {{ 'ok' if g.pct >= 60 else ('w' if g.pct >= 35 else 'b') }}">{{ g.got|n }}/{{ g.mx|n }} · {{ g.pct }}%</span>{% endif %}{% if SITE.show_rank and g.rank %}<span class="pill k" style="margin-left:0">Rank {{ g.rank }}/{{ g.of }}</span>{% endif %}<a class="rp-add" style="margin-left:0" href="{{ url_for('report_card' if staff else 'parent_report', sid=sid, exam=g.name, m=(g.date or '')[:7]) }}" target="_blank" title="Print this exam">🖨️</a></div>
+      <table><thead><tr><th>Subject</th><th>Marks</th><th>%</th>{% if staff %}<th></th>{% endif %}</tr></thead><tbody>
+      {% for r in g.rows %}<tr><td>{{ r.subject }}</td><td>{% if r.absent %}<span class="pill b">Absent</span>{% else %}{{ r.got|n }}/{{ r.mx|n }}{% endif %}</td><td>{% if r.pct is not none %}{{ r.pct }}%{% endif %}</td>{% if staff %}<td>{{ tools('exams', r, staff) }}</td>{% endif %}</tr>{% endfor %}
+      </tbody></table>{{ imgs(g.images, staff) }}</div>{% endfor %}</div>
+  {% else %}<p class="rp-none">No exam records yet.</p>{% endif %}
+</div>
+{% if R.exam_extra %}<div class="rp-sec" style="border-left-color:#d6247d"><h4>🖼️ Exam papers &amp; photos{% if staff %}<a class="rp-add" href="{{ url_for('exam_images', sid=sid) }}">➕ Upload</a>{% endif %}</h4>{{ imgs(R.exam_extra, staff) }}</div>{% endif %}
+<div class="rp-grid">
+  <div class="rp-b"><h4>🏆 Competitive exams{{ add('competitive', sid, staff) }}</h4>
+    {% for r in R.competitive %}<div class="rp-li"><b>{{ r.exam }}</b>{% if r.status %}<span class="pill {{ {'Qualified':'ok','Not qualified':'b','Result awaited':'w'}.get(r.status,'k') }}">{{ r.status }}</span>{% endif %}{{ tools('competitive', r, staff) }}
+      <small>{{ r.date }}{% if r.score %} · {{ r.score }}{% endif %}{% if r.remarks %} · {{ r.remarks }}{% endif %}</small></div>{% else %}<p class="rp-none">No competitive exam records yet.</p>{% endfor %}</div>
+  <div class="rp-b"><h4>🏅 Activities &amp; achievements{{ add('activities', sid, staff) }}</h4>
+    {% for r in R.activities %}<div class="rp-li"><b>{{ r.title or r.kind }}</b>{% if r.kind and r.title %}<span class="pill k">{{ r.kind }}</span>{% endif %}{% if r.award %}<span class="pill ok">{{ r.award }}</span>{% endif %}{{ tools('activities', r, staff) }}
+      <small>{{ r.date }}{% if r.remarks %} · {{ r.remarks }}{% endif %}</small></div>{% else %}<p class="rp-none">No activity records yet.</p>{% endfor %}</div>
+  <div class="rp-b"><h4>🗓️ Attendance{% if R.att_pct is not none %} <span class="pill {{ 'ok' if R.att_pct >= 75 else ('w' if R.att_pct >= 60 else 'b') }}">{{ R.att_pct }}% overall</span>{% endif %}{{ add('attendance', sid, staff) }}</h4>
+    {% if R.attendance %}<div class="rp-chips">{% for r in R.attendance %}<span>{{ r.month }} · {{ r.present|n }}/{{ r.working|n }}{% if r.pct is not none %} ({{ r.pct }}%){% endif %}{{ tools('attendance', r, staff) }}</span>{% endfor %}</div>{% else %}<p class="rp-none">No attendance records yet.</p>{% endif %}</div>
+  <div class="rp-b"><h4>💬 Teacher remarks{{ add('remarks', sid, staff) }}</h4>
+    {% for r in R.remarks %}<div class="rp-li"><span class="pill {{ {'Strength':'ok','Needs improvement':'w'}.get(r.kind,'k') }}">{{ r.kind }}</span><span>{{ r.remark }}</span>{{ tools('remarks', r, staff) }}
+      <small>{{ r.date }}{% if r.by %} · {{ r.by }}{% endif %}</small></div>{% else %}<p class="rp-none">No remarks yet.</p>{% endfor %}</div>
+</div>
+{% endmacro %}
