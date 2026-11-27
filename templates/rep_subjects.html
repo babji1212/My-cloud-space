@@ -1,9 +1,0 @@
-{% extends "base.html" %}{% from "_reptabs.html" import tabs with context %}{% from "_charts.html" import hbars %}
-{% block body %}{{ tabs('rep_subjects') }}
-<h1>📚 Subject analysis</h1><p class="sub">Average percentage of all marks recorded in {{ ay or 'all years' }} (absent marks are left out).</p>
-{% if not m.subjects %}<div class="card empty">No marks recorded yet.</div>{% else %}
-<div class="two"><div class="card"><h3>Subjects - strongest to weakest</h3>{{ hbars(overall_bars, '#0b4ea2', '%') }}</div>
-<div class="card wrap"><h3>Class by subject</h3><table><thead><tr><th>Class</th>{% for s in m.subjects %}<th>{{ s }}</th>{% endfor %}</tr></thead><tbody>{% for c in m.classes %}<tr><td>{{ c }}</td>{% for s in m.subjects %}{% set v = m.cell.get((c, s)) %}<td style="{{ heat(v) }}">{% if v is not none %}<b>{{ v|n }}</b>{% endif %}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div></div>
-<div class="card wrap" style="margin-top:14px"><h3>Trend exam by exam (average %)</h3><table><thead><tr><th>Subject</th>{% for e in trend_exams %}<th>{{ e }}</th>{% endfor %}</tr></thead><tbody>
-{% for s in m.subjects %}<tr><td>{{ s }}</td>{% for e in trend_exams %}{% set v = m.trend[s].get(e) %}<td style="{{ heat(v) }}">{% if v is not none %}{{ v|n }}{% endif %}</td>{% endfor %}</tr>{% endfor %}</tbody></table></div>{% endif %}
-{% endblock %}

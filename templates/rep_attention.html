@@ -1,8 +1,0 @@
-{% extends "base.html" %}{% from "_reptabs.html" import tabs with context %}
-{% block body %}{{ tabs('rep_attention', 'rep_attention_xlsx') }}
-<h1>🚨 Students who need attention</h1><p class="sub">Flagged when a student is below the pass mark ({{ th.pass_mark|n }}%) in a subject in the latest exam, when marks fell by {{ th.drop_alert|n }} points or more, or when attendance is below {{ th.att_alert|n }}%. Thresholds can be changed in Reports &gt; Overview.</p>
-<form method="get" class="tools"><input type="hidden" name="year" value="{{ ay }}"><select name="cls" onchange="this.form.submit()" style="width:auto"><option value="">All classes</option>{% for c in classes %}<option value="{{ c }}" {{ 'selected' if c == cls }}>Class {{ c }}</option>{% endfor %}</select></form>
-<div class="card wrap">{% if rows %}<table><thead><tr><th>Class</th><th>Student</th><th>Latest exam</th><th>Attendance</th><th>Why</th><th>Mobile</th></tr></thead><tbody>{% for r in rows %}<tr><td>{{ r.cls }}</td><td><a href="{{ url_for('student_profile', sid=r.sid) }}" style="color:var(--pri);font-weight:600">{{ r.name }}</a></td><td>{% if r.last_pct is not none %}{{ r.last_pct }}%{% endif %}</td><td>{% if r.att is not none %}{{ r.att }}%{% endif %}</td>
-<td style="white-space:normal;min-width:260px">{% for w in r.why %}<span class="pill {{ 'b' if loop.index == 1 and 'Below' in w else 'w' }}" style="display:inline-block;margin:2px 0">{{ w }}</span><br>{% endfor %}</td><td>{% if r.phone %}<a href="tel:{{ r.phone }}" style="color:var(--pri)">{{ r.phone }}</a>{% endif %}</td></tr>{% endfor %}</tbody></table>
-{% else %}<div class="empty">🎉 Nobody needs attention right now.</div>{% endif %}</div>
-{% endblock %}

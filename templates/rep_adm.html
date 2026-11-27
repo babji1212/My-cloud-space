@@ -1,8 +1,0 @@
-{% extends "base.html" %}{% from "_reptabs.html" import tabs with context %}{% from "_charts.html" import hbars %}
-{% block body %}{{ tabs('rep_adm') }}
-<h1>📝 Admissions funnel</h1>
-{% if not a.n %}<div class="card empty">No admission enquiries in {{ ay or 'all years' }}.</div>{% else %}
-<div class="grid"><div class="card stat"><div class="v">{{ a.n }}</div><div class="l">Enquiries</div></div><div class="card stat"><div class="v">{{ a.status.get('Admitted', 0) }}</div><div class="l">Admitted</div></div><div class="card stat"><div class="v">{{ a.conv }}%</div><div class="l">Enquiry to admission</div></div></div>
-<div class="two"><div class="card"><h3>Funnel</h3>{{ hbars([('Applied', a.status.get('Applied',0)), ('Interview', a.status.get('Interview',0)), ('Admitted', a.status.get('Admitted',0)), ('Rejected', a.status.get('Rejected',0))], '#7b2d8e') }}</div>
-<div class="card"><h3>By month</h3>{{ hbars(a.months, '#0b4ea2') }}</div><div class="card"><h3>How they heard of us</h3>{{ hbars(a.source.items()|list, '#f26522') }}</div><div class="card"><h3>Class applied for</h3>{{ hbars(a.classes.items()|list, '#1a8a3a') }}</div></div>{% endif %}
-{% endblock %}

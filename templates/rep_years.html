@@ -1,7 +1,0 @@
-{% extends "base.html" %}{% from "_reptabs.html" import tabs with context %}{% from "_charts.html" import hbars %}
-{% block body %}{{ tabs('rep_years') }}
-<h1>📈 Year by year</h1>
-<div class="card wrap"><h3>Academic years</h3><table><thead><tr><th>Year</th><th>Exam average</th><th>Attendance</th><th>Fees collected</th><th>Enquiries</th><th>Admitted</th></tr></thead><tbody>{% for r in rows %}<tr><td><b>{{ r.year }}</b></td><td>{% if r.avg is not none %}{{ r.avg }}%{% endif %}</td><td>{% if r.att is not none %}{{ r.att }}%{% endif %}</td><td>{{ r.fees|inr }}</td><td>{{ r.adm }}</td><td>{{ r.admitted }}</td></tr>{% endfor %}</tbody></table></div>
-<div class="two" style="margin-top:14px"><div class="card wrap"><h3>SSC results</h3>{% if ssc %}<table><thead><tr><th>Year</th><th>Students</th><th>Passed</th><th>500+</th><th>400+</th><th>Below 400</th></tr></thead><tbody>{% for y in ssc %}<tr><td><b>{{ y[0] }}</b></td><td>{{ y[1] }}</td><td>{{ y[2] }}</td><td>{{ y[3] }}</td><td>{{ y[4] }}</td><td>{{ y[5] }}</td></tr>{% endfor %}</tbody></table>{% else %}<p class="sub" style="margin:0">Add earlier years in Edit Website &gt; Previous years' SSC results.</p>{% endif %}</div>
-<div class="card"><h3>Students now, by class</h3>{{ hbars(strength, '#0b4ea2') }}</div></div>
-{% endblock %}

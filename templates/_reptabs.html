@@ -1,6 +1,0 @@
-{% macro tabs(active, xlsx=None) %}
-<div class="subtabs noprint">{% for ep, label in [('reports_hub','📊 Overview'),('rep_class','🏫 Class report'),('rep_attention','🚨 Needs attention'),('rep_subjects','📚 Subjects'),('rep_attendance','🗓️ Attendance'),('rep_fees','💰 Fees'),('rep_adm','📝 Admissions'),('rep_comp','🏆 Competitive'),('rep_years','📈 Year by year')] %}<a href="{{ url_for(ep, year=ay) }}" class="{{ 'on' if active == ep }}">{{ label }}</a>{% endfor %}</div>
-<form method="get" class="tools noprint" style="margin:0 0 12px;align-items:center">{% for k, v in request.args.items() if k != 'year' %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
-  <label style="color:var(--mut);font-weight:700;font-size:13px">Academic year</label><select name="year" onchange="this.form.submit()" style="width:auto"><option value="" {{ 'selected' if not ay }}>All years</option>{% for y in years %}<option {{ 'selected' if y == ay }}>{{ y }}</option>{% endfor %}</select>
-  <button type="button" class="btn g" onclick="window.print()">🖨️ Print / PDF</button>{% if xlsx %}<a class="btn g" href="{{ url_for(xlsx, **dict(request.args.to_dict(), year=ay)) }}">⬇ Excel</a>{% endif %}</form>
-{% endmacro %}

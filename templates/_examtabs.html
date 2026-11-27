@@ -1,1 +1,0 @@
-{% macro tabs(active) %}<div class="subtabs"><a href="{{ url_for('listing', m='exams') }}" class="{{ 'on' if active == 'marks' }}">📑 Marks</a><a href="{{ url_for('exam_names') }}" class="{{ 'on' if active == 'names' }}">🏷️ Exam names</a><a href="{{ url_for('exam_images') }}" class="{{ 'on' if active == 'images' }}">🖼️ Exam images</a></div>{% endmacro %}

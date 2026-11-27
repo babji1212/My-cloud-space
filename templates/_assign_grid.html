@@ -1,6 +1,0 @@
-{% macro grid(classes, sections, chosen) %}
-<div class="wrap"><table style="font-size:13px"><thead><tr><th>Class</th><th title="Every section of the class">All sections</th>{% for s in sections %}<th>Sec {{ s }}</th>{% endfor %}</tr></thead><tbody>
-{% for c in classes %}<tr><td><b>{{ c }}</b></td><td><input type="checkbox" name="asg" value="{{ c }}|" style="width:auto" {{ 'checked' if (c ~ '|') in chosen }}></td>
-{% for s in sections %}<td><input type="checkbox" name="asg" value="{{ c }}|{{ s }}" style="width:auto" {{ 'checked' if (c ~ '|' ~ s) in chosen }}></td>{% endfor %}</tr>{% endfor %}</tbody></table></div>
-<p class="hint" style="margin:6px 0 0">Tick <b>All sections</b> to give the teacher the whole class, or tick individual sections such as A or B. The teacher sees only what is ticked.</p>
-{% endmacro %}

@@ -1,5 +1,0 @@
-{% extends "base.html" %}
-{% block body %}
-<h1>🧾 Activity Log</h1><p class="sub">The last 300 actions: who signed in, added, changed or deleted something.</p>
-<div class="card wrap">{% if rows %}<table><thead><tr><th>When</th><th>Who</th><th>Action</th><th>Details</th></tr></thead><tbody>{% for r in rows %}<tr><td>{{ r.ts }}</td><td><b>{{ r.who }}</b></td><td>{{ r.action }}</td><td>{{ r.detail }}</td></tr>{% endfor %}</tbody></table>{% else %}<div class="empty">Nothing recorded yet.</div>{% endif %}</div>
-{% endblock %}
