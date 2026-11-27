@@ -1,0 +1,14 @@
+{% extends "teacher_base.html" %}{% block title %}Reports{% endblock %}{% block heading %}Class report{% endblock %}
+{% block body %}
+{% if not assigns %}<div class="tcard empty">No class is assigned to you yet.</div>{% else %}
+<form method="get" class="tbar-f"><div><label>Class / section</label><select name="c" onchange="this.form.submit()">{% for v, lb in assigns %}<option value="{{ v }}" {{ 'selected' if v == sel }}>{{ lb }}</option>{% endfor %}</select></div>
+  <div><label>Exam</label><select name="exam" onchange="this.form.submit()"><option value="">Choose an exam…</option>{% for n in names %}<option {{ 'selected' if n == exam }}>{{ n }}</option>{% endfor %}</select></div></form>
+{% if data and data.rows %}{% set st = data.stats %}
+<div class="tstats"><div class="tstat"><b>{{ st.n }}</b><span>Students with marks</span></div><div class="tstat"><b>{{ st.avg }}%</b><span>Class average</span></div><div class="tstat"><b>{{ st.pass_pct }}%</b><span>Passed all subjects</span></div><div class="tstat"><b style="color:var(--r)">{{ st.failed }}</b><span>Need help</span></div></div>
+<h2 class="th">Subjects</h2><div class="tcard">{% for s in data.subj_stats %}<div class="row"><div class="info"><b>{{ s.name }}</b><small>High {{ s.hi }}% · Low {{ s.lo }}% · {{ s.pass_pct }}% passed</small></div><span class="pillt" style="{{ heat(s.avg) }};color:#14213d">{{ s.avg }}%</span></div>{% endfor %}</div>
+<h2 class="th">Students</h2><div class="tcard" style="padding:4px 14px">{% for r in data.rows %}<div class="row"><div class="av" style="font-size:14px">{{ r.rank }}</div><div class="info"><b>{{ r.name }}</b><small>{% if r.passed %}Passed all subjects{% else %}Needs help: {{ r.fails|join(', ') }}{% endif %}</small></div>{% if r.pct is not none %}<span class="pillt {{ 'ok' if r.pct >= 60 else ('w' if r.pct >= 35 else 'b') }}">{{ r.pct }}%</span>{% endif %}<a class="tbtn g sm" href="{{ url_for('t_student', sid=r.sid) }}">View</a></div>{% endfor %}</div>
+{% elif exam %}<div class="tcard empty">No marks recorded for this exam yet.</div>{% else %}<div class="tcard empty">Choose an exam to see how the class performed.</div>{% endif %}{% endif %}
+<h2 class="th" id="attention">🚨 Students needing attention</h2>
+<div class="tcard" style="padding:4px 14px">{% for a in att %}<div class="row"><div class="av">{{ a.name[:1] }}</div><div class="info"><b>{{ a.name }} <small style="display:inline">· Class {{ a.cls }}</small></b>{% for w in a.why %}<small>• {{ w }}</small>{% endfor %}</div><a class="tbtn g sm" href="{{ url_for('t_student', sid=a.sid) }}">View</a></div>{% else %}<p class="empty">🎉 Nobody needs attention right now.</p>{% endfor %}</div>
+<p style="color:var(--mut);font-size:12px;margin:8px 4px">Flagged when below the pass mark ({{ th.pass_mark|n }}%), when marks fell by {{ th.drop_alert|n }}+ points, or when attendance is under {{ th.att_alert|n }}%.</p>
+{% endblock %}

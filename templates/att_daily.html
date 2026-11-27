@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>🗓️ Daily attendance</h1><p class="sub">Mark each morning's attendance in a few taps. The monthly totals appear automatically on the student's report and in the parent portal.</p>
+<form method="get" class="card"><div class="fg">
+  <div><label>Class</label><select name="cls" onchange="this.form.submit()"><option value="">Choose…</option>{% for c in classes %}<option value="{{ c }}" {{ 'selected' if c==cls }}>Class {{ c }}</option>{% endfor %}</select></div>
+  <div><label>Date</label><input type="date" name="date" value="{{ day }}" onchange="this.form.submit()"></div></div></form>
+{% if studs %}
+<form method="post" class="card" style="margin-top:14px"><input type="hidden" name="cls" value="{{ cls }}"><input type="hidden" name="date" value="{{ day }}">
+  <div class="tools" style="margin-bottom:8px"><button type="button" class="btn g" onclick="document.querySelectorAll('input[value=P]').forEach(i=>i.checked=true)">✅ Mark all present</button><span class="sub" style="margin:0;align-self:center">Class {{ cls }} · {{ day }} · {{ studs|length }} students</span></div>
+  <div class="wrap"><table><thead><tr><th>Roll</th><th>Student</th><th>Present</th><th>Absent</th><th>Leave</th></tr></thead><tbody>
+  {% for s in studs %}{% set st = cur.get(s.id, 'P') %}<tr><td>{{ s.roll }}</td><td>{{ s.name }}</td>
+    <td><input type="radio" name="s_{{ s.id }}" value="P" style="width:auto" {{ 'checked' if st == 'P' }}></td>
+    <td><input type="radio" name="s_{{ s.id }}" value="A" style="width:auto" {{ 'checked' if st == 'A' }}></td>
+    <td><input type="radio" name="s_{{ s.id }}" value="L" style="width:auto" {{ 'checked' if st == 'L' }}></td></tr>{% endfor %}</tbody></table></div>
+  <p style="margin:12px 0 0"><button class="btn">💾 Save attendance</button></p></form>
+{% elif cls %}<p class="sub" style="margin-top:14px">No students found in Class {{ cls }}.</p>{% endif %}
+{% endblock %}

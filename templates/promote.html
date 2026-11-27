@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block body %}<h1>🎓 Year-end promotion</h1>
+<p class="sub">Moves every student up one class (Nursery → LKG → UKG → 1 … 10 → Alumni) at the end of the academic year ({{ ay }}). Each student's old class is kept in their history, old marks, attendance and fees stay as they are, and a backup is saved first.</p>
+{% if done %}<div class="flash">✅ Classes were already promoted for {{ ay }}.</div>{% endif %}
+<div class="card wrap"><table><thead><tr><th>Now in</th><th>Students</th><th>Will move to</th></tr></thead><tbody>{% for c, n, nx in counts %}<tr><td>Class {{ c }}</td><td>{{ n }}</td><td>{{ 'Alumni (leaves school)' if nx == 'Alumni' else 'Class ' ~ nx }}</td></tr>{% endfor %}<tr><td><b>Alumni already</b></td><td>{{ alumni }}</td><td></td></tr></tbody></table></div>
+<form method="post" class="card" style="margin-top:14px" onsubmit="return confirm('Move every student up one class?')"><h3>Confirm</h3>
+<p class="hint">Do this once, when the new year starts. Type <b>PROMOTE</b> to confirm.</p><input name="confirm" placeholder="Type PROMOTE" style="max-width:240px">
+{% if done %}<label style="display:block;margin:10px 0;color:var(--ink);font-size:14px;font-weight:600"><input type="checkbox" name="again" style="width:auto;margin:0 6px 0 0"> I really want to promote again for {{ ay }}</label>{% endif %}
+<p style="margin:12px 0 0"><button class="btn">Promote all classes</button></p></form>
+{% endblock %}

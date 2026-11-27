@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>📥 Import students</h1><p class="sub">Add many students at once from an Excel or CSV file. A parent login is created automatically for each mobile number.</p>
+<div class="card"><h3>1. Prepare your file</h3><p class="hint">First row = column names: <b>name, class, roll, dob, gender, parent, mobile, address</b>. Only <b>name</b> is required. Use class values like Nursery, LKG, UKG, 1 to 10, dates as 2015-04-10.</p>
+<a class="btn g" href="{{ url_for('import_template') }}">⬇ Download the CSV template</a></div>
+<form method="post" enctype="multipart/form-data" class="card" style="margin-top:14px"><h3>2. Upload it</h3>
+<input type="file" name="file" accept=".csv,.xlsx" required><p style="margin:12px 0 0"><button class="btn">Import students</button></p>
+<p class="hint" style="margin:10px 0 0">Students already in the system (same name, class and roll) are skipped, so it is safe to upload the same file twice.</p></form>
+{% endblock %}

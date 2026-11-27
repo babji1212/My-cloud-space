@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>⏳ Pending fees</h1><p class="sub">{{ rows|length }} student(s) with a balance · total {{ total|inr }}. Tap the WhatsApp button to send a ready-made reminder to the parent. (Fees are matched by the student's name.)</p>
+<div class="card wrap">{% if rows %}<table><thead><tr><th>Student</th><th>Class</th><th>Balance</th><th>Mobile</th><th>Reminder</th></tr></thead><tbody>
+{% for r in rows %}<tr><td><b>{{ r.name }}</b></td><td>{{ r.cls }}</td><td><span class="pill w">{{ r.bal|inr }}</span></td><td>{{ r.phone }}</td>
+  <td>{% if r.wa %}<a class="btn g" style="padding:5px 12px" href="{{ r.wa }}" target="_blank" rel="noopener">💬 WhatsApp</a>{% endif %} <button type="button" class="btn g" style="padding:5px 12px" data-msg="{{ r.msg }}" onclick="navigator.clipboard.writeText(this.dataset.msg);this.textContent='Copied ✓'">Copy message</button></td></tr>{% endfor %}
+</tbody></table>{% else %}<div class="empty">🎉 No pending fees.</div>{% endif %}</div>
+{% endblock %}

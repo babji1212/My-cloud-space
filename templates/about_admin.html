@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>🏛️ About &amp; Leadership</h1>
+<p class="sub">These messages appear in the <b>About School</b> section of the website: Management, Principal, Head Master, Teachers, or anyone else you add. <a href="{{ url_for('home') }}#about" target="_blank" rel="noopener" style="color:var(--pri)">Open website ↗</a></p>
+<form method="post" enctype="multipart/form-data">
+{% for b in people %}
+<div class="card" style="margin-bottom:14px"><h3>{{ b.icon }} {{ b.role }}</h3><div class="fg">
+  <div><label>Heading (e.g. Principal)</label><input name="role_{{ b.id }}" value="{{ b.role }}" required></div>
+  <div><label>Name</label><input name="name_{{ b.id }}" value="{{ b.name }}"></div>
+  <div><label>Icon (emoji, used when there is no photo)</label><input name="icon_{{ b.id }}" value="{{ b.icon }}" maxlength="8"></div>
+  <div><label>Order on the page (1 = first)</label><input type="number" step="any" name="ord_{{ b.id }}" value="{{ loop.index }}"></div>
+  <div class="full"><label>Message about our school</label><textarea name="msg_{{ b.id }}" rows="6">{{ b.message }}</textarea></div>
+  <div class="full"><label>Photo</label>
+    {% if b.photo %}<img src="{{ url_for('static', filename='uploads/' ~ b.photo) }}" alt="" style="width:80px;height:80px;object-fit:cover;border-radius:16px;display:block;margin-bottom:6px">
+    <label style="display:inline;font-weight:500"><input type="checkbox" name="clear_{{ b.id }}" style="width:auto;margin:0 6px 8px 0">Remove current photo</label><br>{% endif %}
+    <input type="file" name="photo_{{ b.id }}" accept="image/*"></div>
+  <div class="full"><label style="display:inline;color:var(--bad);font-weight:600"><input type="checkbox" name="del_{{ b.id }}" style="width:auto;margin:0 6px 0 0">Delete this section</label></div>
+</div></div>
+{% endfor %}
+<div class="card" style="margin-bottom:14px;border-style:dashed"><h3>➕ Add another section (optional)</h3><div class="fg">
+  <div><label>Heading (e.g. Correspondent, Vice Principal)</label><input name="new_role"></div>
+  <div><label>Name</label><input name="new_name"></div>
+  <div><label>Icon (emoji)</label><input name="new_icon" value="⭐" maxlength="8"></div>
+  <div><label>Photo</label><input type="file" name="new_photo" accept="image/*"></div>
+  <div class="full"><label>Message</label><textarea name="new_msg" rows="4"></textarea></div></div></div>
+<button class="btn">💾 Save changes</button>
+</form>
+{% endblock %}

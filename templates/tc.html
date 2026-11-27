@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Transfer certificate</title><link rel="stylesheet" href="{{ url_for('static', filename='print.css') }}"></head>
+<body class="pr">
+<div class="pbar"><a class="g" href="{{ url_for('student_profile', sid=kid.id) }}">← Back</a><button onclick="window.print()">🖨️ Print certificate</button><span class="muted" style="align-self:center">Fill in or correct the blue lines, then print.</span></div>
+<div class="sheet">
+<div class="lh">{% if has_logo %}<img src="{{ url_for('static', filename='logo.png', v=logo_v) }}" alt="">{% endif %}<div><h1>{{ SCHOOL }}</h1><small>{{ SITE.address }} · {{ SITE.phone }}</small><small>{{ SITE.recognised }}</small></div><div class="ttl">TRANSFER CERTIFICATE<br><span class="muted">T.C. No. <input class="u" style="min-width:70px;width:70px"></span></div></div>
+<style>.u{border:0;border-bottom:1px dotted #0b4ea2;font:inherit;color:#0b4ea2;padding:2px 4px;background:transparent;min-width:200px}.tcr{display:flex;gap:6px;align-items:baseline;margin:11px 0;font-size:14px}.tcr b{min-width:250px}@media print{.u{border-bottom:1px dotted #999}}</style>
+<div class="tcr"><b>1. Name of the student</b><input class="u" value="{{ kid.name }}"></div>
+<div class="tcr"><b>2. Parent / Guardian name</b><input class="u" value="{{ kid.parent }}"></div>
+<div class="tcr"><b>3. Date of birth</b><input class="u" value="{{ kid.dob }}"></div>
+<div class="tcr"><b>4. Class in which studying</b><input class="u" value="{{ kid.cls }}"></div>
+<div class="tcr"><b>5. Date of admission</b><input class="u"></div>
+<div class="tcr"><b>6. Conduct and character</b><input class="u" value="Good"></div>
+<div class="tcr"><b>7. Reason for leaving</b><input class="u"></div>
+<div class="tcr"><b>8. Fees paid up to</b><input class="u"></div>
+<div class="tcr"><b>9. Date of issue</b><input class="u" value="{{ today }}"></div>
+<div class="tcr"><b>10. Remarks</b><input class="u" style="min-width:300px"></div>
+<div class="sign" style="margin-top:60px"><div>Class Teacher</div><div>Office Seal</div><div>Principal</div></div></div></body></html>

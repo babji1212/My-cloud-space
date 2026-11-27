@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>✏️ Marks by class</h1><p class="sub">Pick a class, exam and subject, then type the marks of every student in one table. Saving again for the same exam and subject updates the marks.</p>
+<form method="get" class="card"><div class="fg">
+  <div><label>Class</label><select name="cls" required><option value="">Choose…</option>{% for c in classes %}<option value="{{ c }}" {{ 'selected' if c==cls }}>Class {{ c }}</option>{% endfor %}</select></div>
+  <div><label>Exam</label><input name="exam" list="exl" value="{{ exam }}" required placeholder="e.g. Half-Yearly"><datalist id="exl">{% for e in exam_names %}<option>{{ e }}</option>{% endfor %}</datalist></div>
+  <div><label>Subject</label><input name="subject" list="sbl" value="{{ subject }}" required placeholder="e.g. Mathematics"><datalist id="sbl">{% for s in subjects %}<option>{{ s }}</option>{% endfor %}</datalist></div>
+  <div><label>Exam date</label><input type="date" name="date" value="{{ date }}"></div>
+  <div><label>Maximum marks</label><input type="number" name="max" value="{{ max }}" min="1"></div>
+  <div style="display:flex;align-items:flex-end"><button class="btn">Show students</button></div></div></form>
+{% if studs and exam and subject %}
+<form method="post" class="card" style="margin-top:14px"><input type="hidden" name="cls" value="{{ cls }}"><input type="hidden" name="exam" value="{{ exam }}"><input type="hidden" name="subject" value="{{ subject }}"><input type="hidden" name="date" value="{{ date }}"><input type="hidden" name="max" value="{{ max }}">
+  <h3>Class {{ cls }} · {{ exam }} · {{ subject }} · out of {{ max }}</h3>
+  <div class="wrap"><table><thead><tr><th>Roll</th><th>Student</th><th>Marks</th><th>Absent</th></tr></thead><tbody>
+  {% for s in studs %}{% set e = existing.get(s.id|string) %}<tr><td>{{ s.roll }}</td><td>{{ s.name }}</td>
+    <td><input type="number" step="any" min="0" name="m_{{ s.id }}" value="{{ e.marks if e and e.attended != 'Absent' else '' }}" style="width:110px"></td>
+    <td><input type="checkbox" name="absent" value="{{ s.id }}" style="width:auto" {{ 'checked' if e and e.attended == 'Absent' }}></td></tr>{% endfor %}</tbody></table></div>
+  <p style="margin:12px 0 0"><button class="btn">💾 Save marks for the class</button></p></form>
+{% elif cls and not studs %}<p class="sub" style="margin-top:14px">No students found in Class {{ cls }}.</p>{% endif %}
+{% endblock %}

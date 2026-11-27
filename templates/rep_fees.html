@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% from "_reptabs.html" import tabs with context %}{% from "_charts.html" import hbars, stack %}
+{% block body %}{{ tabs('rep_fees', 'rep_fees_xlsx') }}
+<h1>💰 Fee analysis</h1>
+<div class="grid"><div class="card stat"><div class="v">{{ fa.due|inr }}</div><div class="l">Total due</div></div><div class="card stat"><div class="v" style="color:var(--ok)">{{ fa.paid|inr }}</div><div class="l">Collected{% if fa.due %} ({{ (fa.paid / fa.due * 100)|round|int }}%){% endif %}</div></div><div class="card stat"><div class="v" style="color:var(--warn)">{{ (fa.due - fa.paid)|inr }}</div><div class="l">Pending</div></div></div>
+<div class="two"><div class="card"><h3>Collected by month</h3>{{ hbars(fa.by_month, '#1a8a3a') }}</div><div class="card"><h3>By class</h3>{{ stack(class_rows) }}</div></div>
+<div class="card wrap" style="margin-top:14px"><h3>Longest-pending families</h3>{% if fa.pending %}<table><thead><tr><th>Student</th><th>Class</th><th>Pending</th><th>Oldest record</th><th>Days</th></tr></thead><tbody>{% for p in fa.pending %}<tr><td>{{ p.name }}</td><td>{{ p.cls }}</td><td><span class="pill w">{{ p.bal|inr }}</span></td><td>{{ p.oldest }}</td><td>{{ days(p.oldest) }}</td></tr>{% endfor %}</tbody></table><p class="sub" style="margin:10px 0 0"><a href="{{ url_for('pending_fees') }}" style="color:var(--pri)">Send WhatsApp reminders →</a></p>{% else %}<div class="empty">🎉 No pending fees.</div>{% endif %}</div>
+{% endblock %}

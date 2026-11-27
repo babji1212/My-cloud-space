@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parent Portal · {{ SCHOOL }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='art.css') }}"><link rel="stylesheet" href="{{ url_for('static', filename='report.css') }}"></head>
+<body class="pp">
+{% import "_art.html" as art %}{% import "_report.html" as rp with context %}{{ art.sprite() }}
+<header><div class="bar">
+  <a href="{{ url_for('home') }}" class="brand"><span class="logo">{% if has_logo %}<img src="{{ url_for('static', filename='logo.png', v=logo_v) }}" alt="">{% else %}🌱{% endif %}</span><span>R K LITTLE BUDS<small>Parent portal</small></span></a>
+  <div class="pnav"><button class="dp" id="tsm" title="Smaller text">A−</button><button class="dp" id="tbg" title="Larger text">A+</button><button class="dp" id="tth" title="Dark / light">🌙</button><a href="{{ url_for('parent_password') }}">🔑 Password</a><a class="login" href="{{ url_for('parent_logout') }}">Logout</a></div>
+</div></header>
+<div class="pmain">{{ art.dec('portal') }}
+  {% for m in get_flashed_messages() %}<div class="msg" style="text-align:left;margin-bottom:10px">{{ m }}</div>{% endfor %}
+  <div class="top2"><h1>Welcome{% if p.name %}, {{ p.name }}{% endif %} 👋</h1>
+    {% if cards %}<div class="tots"><span>{{ cards|length }} child{{ '' if cards|length == 1 else 'ren' }}</span><span>Due ₹{{ '{:,.0f}'.format(tot.due) }}</span><span>Paid ₹{{ '{:,.0f}'.format(tot.paid) }}</span>
+      <span class="{{ 'bd' if tot.bal > 0 else 'ok' }}">{% if tot.bal > 0 %}Balance ₹{{ '{:,.0f}'.format(tot.bal) }}{% else %}All paid ✓{% endif %}</span></div>{% endif %}</div>
+  {% if notices %}<div class="c" id="notices" style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)">📌 Notices &amp; homework</h4>{% for n in notices %}<div class="rp-li"><b>{{ n.title }}</b><span class="pill {{ 'w' if n.kind == 'Homework' else 'k' }}">{{ n.kind }}</span><small>{{ n.date }}{% if n.audience and n.audience != 'All classes' %} · Class {{ n.audience }}{% endif %}</small>{% if n.id in read_ids %}<span class="pill ok">✓ Read</span>{% else %}<form method="post" action="{{ url_for('parent_notice_read', nid=n.id) }}" style="display:inline"><button class="rp-add" style="border:0;margin-left:0;cursor:pointer">✓ Mark as read</button></form>{% endif %}{% if n.details %}<div style="flex-basis:100%;font-size:13px;white-space:pre-line">{{ n.details }}</div>{% endif %}</div>{% endfor %}</div>{% endif %}
+  {% if not cards %}<div class="c">No student is linked to this login yet. Please contact the school office.</div>{% endif %}
+  {% for c in cards %}{% set k = c.kid %}
+  <div class="c kc">
+    <div class="kh"><div class="av">{{ k.name[:1] }}</div>
+      <div class="kn"><h2>{{ k.name }}</h2>{% if k.cls %}<span class="pill k">Class {{ k.cls }}</span>{% endif %}{% if k.roll %}<span class="pill">Roll {{ k.roll }}</span>{% endif %}{% if c.report.avg is not none %}<span class="pill k">Average {{ c.report.avg }}%</span>{% endif %}{% if c.report.att_pct is not none %}<span class="pill ok">Attendance {{ c.report.att_pct }}%</span>{% endif %}</div>
+      <a class="rp-add" style="margin-left:auto" href="{{ url_for('parent_report', sid=k.id) }}" target="_blank">🖨️ Report card</a>{% if c.fees %}<div class="kbal" style="margin-left:0">{% if c.bal > 0 %}<span class="pill w">₹{{ '{:,.0f}'.format(c.bal) }} due</span>{% else %}<span class="pill">Fees paid ✓</span>{% endif %}</div>{% endif %}</div>
+    <div class="kgrid">
+      <div class="kd"><h4>Details</h4><dl>{% for label, v in c.info %}<dt>{{ label }}</dt><dd>{{ v }}</dd>{% endfor %}</dl></div>
+      <div class="kf"><h4>Fees</h4>
+        {% if c.fees %}<div class="sums"><div><small>Due</small><b>₹{{ '{:,.0f}'.format(c.due) }}</b></div><div><small>Paid</small><b class="g">₹{{ '{:,.0f}'.format(c.paid) }}</b></div><div><small>Balance</small><b class="{{ 'w' if c.bal > 0 else 'g' }}">{% if c.bal > 0 %}₹{{ '{:,.0f}'.format(c.bal) }}{% else %}Nil{% endif %}</b></div></div>
+        {% if c.bal > 0 and SITE.upi_id %}<a class="upi" href="upi://pay?pa={{ SITE.upi_id|urlencode }}&amp;pn={{ SITE.upi_name|urlencode }}&amp;am={{ '%.0f'|format(c.bal) }}&amp;cu=INR&amp;tn={{ ('Fees ' ~ k.name)|urlencode }}">💳 Pay ₹{{ '{:,.0f}'.format(c.bal) }} by UPI</a><small class="upis">UPI ID: {{ SITE.upi_id }} · after paying, the school office records the payment.</small>{% endif %}
+        <div class="wrap"><table><thead><tr><th>Term</th><th>Due</th><th>Paid</th><th>Date</th><th>Mode</th><th></th></tr></thead><tbody>
+          {% for f in c.fees %}<tr><td>{{ f.term }}</td><td>₹{{ '{:,.0f}'.format(f.due|float if f.due else 0) }}</td><td>₹{{ '{:,.0f}'.format(f.paid|float if f.paid else 0) }}</td><td>{{ f.date }}</td><td>{{ f.mode }}</td><td><a href="{{ url_for('parent_receipt', rid=f.id) }}" target="_blank" title="Receipt">🧾</a></td></tr>{% endfor %}</tbody></table></div>
+        {% else %}<p class="none">No fee records yet.</p>{% endif %}</div>
+    </div>
+    {{ rp.report(c.report, False, k.id) }}
+    {% if c.teachers %}<div class="kt"><h4>Teachers of Class {{ k.cls }}</h4><div class="tch">{% for t in c.teachers %}<span class="tp"><i>{% if t.photo %}<img src="{{ url_for('static', filename='uploads/' ~ t.photo) }}" alt="">{% else %}{{ t.name[:1] }}{% endif %}</i><b>{{ t.name }}</b><small>{{ t.subject }}</small></span>{% endfor %}</div></div>{% endif %}
+  </div>
+  {% endfor %}
+  {% if cards %}<div class="c" id="feedback" style="margin-top:10px"><h4 style="margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)">✉️ Send a message to the school</h4>
+    <form method="post" action="{{ url_for('parent_feedback') }}" class="fbk">{% if cards|length > 1 %}<select name="sid">{% for c in cards %}<option value="{{ c.kid.id }}">{{ c.kid.name }}</option>{% endfor %}</select>{% else %}<input type="hidden" name="sid" value="{{ cards[0].kid.id }}">{% endif %}
+    <textarea name="message" rows="2" maxlength="1000" placeholder="Write your question, suggestion or feedback…" required></textarea><button class="btn">Send</button></form></div>{% endif %}
+  {% if SITE.bus_routes %}<div class="c" style="margin-top:10px"><h4 style="margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut)">🚌 School bus routes</h4><table class="brt"><tr><th>Route</th><th>Timing</th><th>Stops</th></tr>{% for a, b, c2 in SITE.bus_routes %}<tr><td>{{ a }}</td><td>{{ b }}</td><td>{{ c2 }}</td></tr>{% endfor %}</table></div>{% endif %}
+</div>
+<footer>© {{ today[:4] }} {{ SCHOOL }}. All rights reserved.<small>Private to your family - please do not share your password.</small></footer>
+<script>
+const h=document.documentElement;try{const sv=JSON.parse(localStorage.getItem('rkprefs')||'{}');if(sv.big)h.classList.add('big');if(sv.th)h.classList.add(sv.th)}catch(_){}
+function sv(){try{localStorage.setItem('rkprefs',JSON.stringify({big:h.classList.contains('big'),th:h.classList.contains('dk')?'dk':(h.classList.contains('lt')?'lt':'')}))}catch(_){}}
+document.getElementById('tbg').onclick=()=>{h.classList.add('big');sv()};document.getElementById('tsm').onclick=()=>{h.classList.remove('big');sv()};
+document.getElementById('tth').onclick=()=>{const dark=h.classList.contains('dk')||(!h.classList.contains('lt')&&matchMedia('(prefers-color-scheme: dark)').matches);h.classList.remove('dk','lt');h.classList.add(dark?'lt':'dk');sv()};
+</script></body></html>

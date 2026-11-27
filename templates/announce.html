@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>📢 Announcements</h1>
+<p class="sub">These lines scroll across the website between the menu and the building picture. Staff and Admin can add, change or remove them. You can type Telugu or English. <a href="{{ url_for('home') }}" target="_blank" rel="noopener" style="color:var(--pri)">Open website ↗</a></p>
+<div class="card"><h3>➕ Add an announcement</h3>
+<form method="post"><div class="fg">
+  <div class="full"><label>Announcement text (keep it short)</label><input name="text" maxlength="300" placeholder="e.g. School will remain closed on Friday for a local festival" required></div>
+  <div><label>Show until (optional)</label><input type="date" name="until"></div>
+  <div style="display:flex;align-items:flex-end"><button class="btn">Add &amp; show on website</button></div>
+</div></form>
+<p class="hint" style="margin:10px 0 0">Leave "Show until" empty to keep it on the website until you remove it. After the chosen date it hides by itself.</p></div>
+
+<h3 style="margin:22px 0 10px">Current announcements ({{ items|length }})</h3>
+{% for a in items %}
+{% set expired = a.until and a.until < today %}
+<div class="card" style="margin-bottom:12px{% if not a.on or expired %};opacity:.75{% endif %}">
+  <form method="post" action="{{ url_for('announce_save', aid=a.id) }}"><div class="fg">
+    <div class="full"><label>Text</label><input name="text" value="{{ a.text }}" maxlength="300" required></div>
+    <div><label>Show until (optional)</label><input type="date" name="until" value="{{ a.until }}"></div>
+    <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap">
+      <label style="display:flex;gap:6px;align-items:center;color:var(--ink);font-size:14px;font-weight:600;margin:0 0 10px"><input type="checkbox" name="on" style="width:auto;margin:0" {{ 'checked' if a.on }}> Show on website</label>
+      <button class="btn">💾 Save</button></div>
+  </div></form>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:10px;flex-wrap:wrap">
+    <span class="sub" style="margin:0">{% if expired %}⏰ Expired - hidden on the website{% elif not a.on %}⏸ Switched off - hidden on the website{% else %}✅ Scrolling on the website{% endif %}</span>
+    <form method="post" action="{{ url_for('announce_delete', aid=a.id) }}" onsubmit="return confirm('Delete this announcement?')"><button class="btn r" style="padding:6px 14px">🗑️ Delete</button></form></div>
+</div>
+{% else %}<div class="card empty">No announcements yet. Add the first one above.</div>{% endfor %}
+{% endblock %}
